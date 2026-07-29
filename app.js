@@ -2,7 +2,7 @@
    BLADE FORGE - Interactive Beyblade Customizer & Simulator Engine
    ========================================================================== */
 
-// --- PARTS DATABASE ---
+// --- PARTS DATABASE (60+ CUSTOMIZATIONS) ---
 const BEYBLADE_PARTS = {
   blades: [
     {
@@ -60,111 +60,149 @@ const BEYBLADE_PARTS = {
       bladesCount: 5,
       shape: 'star-wings',
       desc: 'Balanced 5-blade contact layer adaptable to both aggressive and defensive spin styles.'
+    },
+    {
+      id: 'shark',
+      name: 'Shark Edge',
+      type: 'Attack',
+      attack: 92,
+      defense: 42,
+      stamina: 48,
+      burst: 82,
+      weight: 37.1,
+      price: 21.49,
+      bladesCount: 3,
+      shape: 'shark-fin',
+      desc: 'Downward-slanting shark fin blade designed to launch opponents via uppercut contact.'
+    },
+    {
+      id: 'wizard',
+      name: 'Wizard Arrow',
+      type: 'Stamina',
+      attack: 52,
+      defense: 70,
+      stamina: 98,
+      burst: 72,
+      weight: 33.9,
+      price: 18.49,
+      bladesCount: 4,
+      shape: 'arrow-wings',
+      desc: 'Arrow-shaped aerodynamics that pierce air resistance for unbeatable spin duration.'
+    },
+    {
+      id: 'hell',
+      name: 'Hell Hammer',
+      type: 'Attack',
+      attack: 98,
+      defense: 38,
+      stamina: 45,
+      burst: 88,
+      weight: 39.0,
+      price: 23.99,
+      bladesCount: 2,
+      shape: 'heavy-hammer',
+      desc: 'Brutal dual-weighted bludgeoning hammer for devastating knockout smashes.'
+    },
+    {
+      id: 'valiant',
+      name: 'Valiant Goliath',
+      type: 'Balance',
+      attack: 80,
+      defense: 70,
+      stamina: 70,
+      burst: 85,
+      weight: 36.5,
+      price: 20.49,
+      bladesCount: 5,
+      shape: 'goliath-shield',
+      desc: 'Titanium-alloy composite built for heavy counterattacks and rock-solid balance.'
+    },
+    {
+      id: 'cobalt',
+      name: 'Cobalt Dragoon',
+      type: 'Attack',
+      attack: 90,
+      defense: 50,
+      stamina: 60,
+      burst: 84,
+      weight: 36.2,
+      price: 21.99,
+      bladesCount: 3,
+      shape: 'dragon-claws',
+      desc: 'Left-spin capable dragon claw blades engineered for violent counter-rotation hits.'
+    },
+    {
+      id: 'leon',
+      name: 'Leon Crest',
+      type: 'Defense',
+      attack: 60,
+      defense: 92,
+      stamina: 70,
+      burst: 86,
+      weight: 37.8,
+      price: 21.99,
+      bladesCount: 4,
+      shape: 'crest-shield',
+      desc: 'Majestic lion crest perimeter distributing impact shock evenly across core.'
+    },
+    {
+      id: 'unicorn',
+      name: 'Unicorn Sting',
+      type: 'Balance',
+      attack: 78,
+      defense: 68,
+      stamina: 74,
+      burst: 81,
+      weight: 34.8,
+      price: 19.49,
+      bladesCount: 5,
+      shape: 'horn-edge',
+      desc: 'Piercing spear-point contact zones for sudden stamina-draining counter strikes.'
+    },
+    {
+      id: 'viper',
+      name: 'Viper Tail',
+      type: 'Stamina',
+      attack: 58,
+      defense: 72,
+      stamina: 94,
+      burst: 75,
+      weight: 34.5,
+      price: 18.99,
+      bladesCount: 4,
+      shape: 'viper-fangs',
+      desc: 'Whip-like tail blade designed to slip past defenses and maintain spin equilibrium.'
     }
   ],
   ratchets: [
-    {
-      id: '3-60',
-      name: '3-60 Torque',
-      height: 6.0,
-      teeth: 3,
-      attack: 15,
-      defense: 10,
-      stamina: 10,
-      burst: 20,
-      weight: 6.2,
-      price: 7.99,
-      desc: 'Low clearance 3-burst lock ratchet providing tight center of gravity.'
-    },
-    {
-      id: '5-60',
-      name: '5-60 Balanced',
-      height: 6.0,
-      teeth: 5,
-      attack: 10,
-      defense: 15,
-      stamina: 15,
-      burst: 15,
-      weight: 6.5,
-      price: 7.99,
-      desc: '5-point symmetric ratchet designed for smooth rotation stability.'
-    },
-    {
-      id: '9-60',
-      name: '9-60 Aero',
-      height: 6.0,
-      teeth: 9,
-      attack: 5,
-      defense: 12,
-      stamina: 20,
-      burst: 12,
-      weight: 6.0,
-      price: 8.49,
-      desc: 'Multi-tooth circular ratchet minimizing drag for endurance bladers.'
-    },
-    {
-      id: '1-60',
-      name: '1-60 Heavy Recoil',
-      height: 6.0,
-      teeth: 1,
-      attack: 25,
-      defense: 5,
-      stamina: 5,
-      burst: 25,
-      weight: 7.1,
-      price: 8.99,
-      desc: 'Single heavy-weighted ratchet protrusion focused on maximum burst contact.'
-    }
+    { id: '1-60', name: '1-60 Heavy Recoil', height: 6.0, teeth: 1, attack: 25, defense: 5, stamina: 5, burst: 25, weight: 7.1, price: 8.99, desc: 'Single heavy-weighted ratchet protrusion focused on maximum burst contact.' },
+    { id: '2-60', name: '2-60 Dual Smash', height: 6.0, teeth: 2, attack: 20, defense: 8, stamina: 8, burst: 22, weight: 6.8, price: 8.49, desc: 'Twin opposing impact blades for rhythmic heavy smashes.' },
+    { id: '3-60', name: '3-60 Torque', height: 6.0, teeth: 3, attack: 15, defense: 10, stamina: 10, burst: 20, weight: 6.2, price: 7.99, desc: 'Low clearance 3-burst lock ratchet providing tight center of gravity.' },
+    { id: '4-60', name: '4-60 Quad Lock', height: 6.0, teeth: 4, attack: 12, defense: 14, stamina: 12, burst: 18, weight: 6.4, price: 7.99, desc: 'Square symmetry for balanced weight distribution and burst resistance.' },
+    { id: '5-60', name: '5-60 Balanced', height: 6.0, teeth: 5, attack: 10, defense: 15, stamina: 15, burst: 15, weight: 6.5, price: 7.99, desc: '5-point symmetric ratchet designed for smooth rotation stability.' },
+    { id: '7-60', name: '7-60 Septa Gear', height: 6.0, teeth: 7, attack: 8, defense: 18, stamina: 16, burst: 16, weight: 6.6, price: 8.49, desc: '7-tooth multi-contact ratchet for superior stability.' },
+    { id: '9-60', name: '9-60 Aero', height: 6.0, teeth: 9, attack: 5, defense: 12, stamina: 20, burst: 12, weight: 6.0, price: 8.49, desc: 'Multi-tooth circular ratchet minimizing drag for endurance bladers.' },
+    { id: '1-80', name: '1-80 High Reach', height: 8.0, teeth: 1, attack: 22, defense: 12, stamina: 10, burst: 18, weight: 6.9, price: 8.99, desc: 'Elevated 8mm height single protrusion for upper-deck smash attacks.' },
+    { id: '3-80', name: '3-80 Tower', height: 8.0, teeth: 3, attack: 14, defense: 15, stamina: 14, burst: 16, weight: 6.5, price: 8.49, desc: 'Tall 3-sided ratchet granting high-angle downward strike trajectories.' },
+    { id: '4-80', name: '4-80 High Quad', height: 8.0, teeth: 4, attack: 11, defense: 18, stamina: 15, burst: 15, weight: 6.7, price: 8.49, desc: 'Elevated 4-point defense ratchet guarding against low undercuts.' },
+    { id: '9-80', name: '9-80 Sky Aero', height: 8.0, teeth: 9, attack: 6, defense: 15, stamina: 22, burst: 14, weight: 6.3, price: 8.99, desc: 'Tall multi-tooth aerodynamic ratchet built for high-altitude spin endurance.' },
+    { id: 'heavy', name: 'Heavy Metal Core', height: 6.0, teeth: 12, attack: 18, defense: 22, stamina: 18, burst: 25, weight: 8.5, price: 10.99, desc: 'Solid tungsten-alloy core adding massive weight and unyielding burst resistance.' }
   ],
   bits: [
-    {
-      id: 'flat',
-      name: 'Flat Rubber Tip',
-      type: 'Attack',
-      attack: 25,
-      defense: 5,
-      stamina: 5,
-      burst: 15,
-      weight: 2.1,
-      price: 7.99,
-      desc: 'Wide flat rubber point for high friction stadium wall dashes.'
-    },
-    {
-      id: 'ball',
-      name: 'Polycarbonate Ball',
-      type: 'Stamina',
-      attack: 5,
-      defense: 15,
-      stamina: 25,
-      burst: 10,
-      weight: 2.3,
-      price: 7.49,
-      desc: 'Smooth spherical tip minimizing friction for prolonged spin battles.'
-    },
-    {
-      id: 'hexa',
-      name: 'Hexa Needle',
-      type: 'Defense',
-      attack: 10,
-      defense: 25,
-      stamina: 10,
-      burst: 20,
-      weight: 2.5,
-      price: 8.49,
-      desc: 'Sharp needle tip anchored by hexagonal guard for central crater control.'
-    },
-    {
-      id: 'taper',
-      name: 'Taper Gear',
-      type: 'Balance',
-      attack: 15,
-      defense: 15,
-      stamina: 15,
-      burst: 15,
-      weight: 2.2,
-      price: 7.99,
-      desc: 'Angled tip switching from outer dash attacks to stable center spinning.'
-    }
+    { id: 'flat', name: 'Flat Rubber Tip', type: 'Attack', attack: 25, defense: 5, stamina: 5, burst: 15, weight: 2.1, price: 7.99, desc: 'Wide flat rubber point for high friction stadium wall dashes.' },
+    { id: 'ball', name: 'Polycarbonate Ball', type: 'Stamina', attack: 5, defense: 15, stamina: 25, burst: 10, weight: 2.3, price: 7.49, desc: 'Smooth spherical tip minimizing friction for prolonged spin battles.' },
+    { id: 'hexa', name: 'Hexa Needle', type: 'Defense', attack: 10, defense: 25, stamina: 10, burst: 20, weight: 2.5, price: 8.49, desc: 'Sharp needle tip anchored by hexagonal guard for central crater control.' },
+    { id: 'taper', name: 'Taper Gear', type: 'Balance', attack: 15, defense: 15, stamina: 15, burst: 15, weight: 2.2, price: 7.99, desc: 'Angled tip switching from outer dash attacks to stable center spinning.' },
+    { id: 'needle', name: 'Fine Needle', type: 'Stamina', attack: 4, defense: 18, stamina: 26, burst: 12, weight: 2.0, price: 7.49, desc: 'Ultra-thin needle tip for absolute zero-friction center stamina.' },
+    { id: 'rush', name: 'Rush Rubber Spike', type: 'Attack', attack: 28, defense: 4, stamina: 4, burst: 14, weight: 2.3, price: 8.99, desc: 'Offset rubber spike designed for extreme X-Extreme dash accelerations.' },
+    { id: 'glide', name: 'Glide Sphere', type: 'Stamina', attack: 6, defense: 16, stamina: 27, burst: 11, weight: 2.4, price: 8.49, desc: 'Wide rounded dome tip that effortlessly glides across stadium contours.' },
+    { id: 'quake', name: 'Quake Spike', type: 'Attack', attack: 30, defense: 2, stamina: 2, burst: 12, weight: 2.6, price: 9.49, desc: 'Off-center conical tip causing erratic floor-shaking violent attacks.' },
+    { id: 'elevate', name: 'Elevate Spiral', type: 'Balance', attack: 18, defense: 12, stamina: 18, burst: 16, weight: 2.3, price: 8.49, desc: 'Spring-loaded vertical shifting tip that alters height dynamically.' },
+    { id: 'gear-needle', name: 'Gear Needle', type: 'Defense', attack: 12, defense: 22, stamina: 15, burst: 18, weight: 2.4, price: 8.99, desc: 'Needle tip with gear teeth engaging stadium rails for rapid defense recovery.' },
+    { id: 'metal-flat', name: 'Metal Flat Tip', type: 'Attack', attack: 27, defense: 8, stamina: 8, burst: 16, weight: 2.8, price: 9.99, desc: 'Hardened steel flat tip for blistering metal-on-metal stadium slide speeds.' },
+    { id: 'accel', name: 'Accel Rubber Ring', type: 'Attack', attack: 26, defense: 6, stamina: 6, burst: 15, weight: 2.2, price: 8.49, desc: 'Conical rubber ring for high-speed aggressive wide-radius bank turns.' },
+    { id: 'wedge', name: 'Wedge Block', type: 'Defense', attack: 8, defense: 28, stamina: 12, burst: 22, weight: 2.7, price: 8.99, desc: 'Triangular wedge bit that wedges firmly into stadium floor against knockouts.' },
+    { id: 'point', name: 'Sharp Point', type: 'Stamina', attack: 3, defense: 14, stamina: 28, burst: 10, weight: 2.0, price: 7.99, desc: 'Needle-point stamina specialist for ultimate final-seconds spin victories.' }
   ]
 };
 
