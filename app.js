@@ -826,37 +826,50 @@ function initStadiumSimulator() {
     });
   }
 
-  // Keyboard controls
-  window.addEventListener('keydown', (e) => {
+  // Robust Keyboard controls on document & window
+  document.addEventListener('keydown', (e) => {
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space'].includes(e.code)) {
       keysPressed[e.code] = true;
-      if (e.code === 'Space') e.preventDefault();
+      e.preventDefault();
     }
   });
-  window.addEventListener('keyup', (e) => {
-    if (keysPressed[e.code]) {
+  document.addEventListener('keyup', (e) => {
+    if (keysPressed[e.code] !== undefined) {
       keysPressed[e.code] = false;
     }
   });
 
-  // Mouse / Touch Dragging controls on arena canvas
-  simCanvas.addEventListener('mousedown', (e) => {
+  // Direct Click/Tap anywhere on arena canvas to steer Player 1 directly to that point!
+  simCanvas.addEventListener('click', (e) => {
+    if (!battleActive) return;
     const rect = simCanvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
-    if (Math.hypot(mx - p1State.x, my - p1State.y) < p1State.radius + 20) {
-      isDraggingP1 = true;
-    }
+    
+    // Direct impulse towards clicked point
+    const angle = Math.atan2(my - p1State.y, mx - p1State.x);
+    p1State.vx += Math.cos(angle) * 8;
+    p1State.vy += Math.sin(angle) * 8;
+
+    simFloatingTexts.push({ x: p1State.x, y: p1State.y - 20, text: '🎯 BOOST!', color: '#facc15', life: 0.8 });
+  });
+
+  // Mouse / Touch Dragging controls on arena canvas
+  simCanvas.addEventListener('mousedown', (e) => {
+    isDraggingP1 = true;
   });
   simCanvas.addEventListener('mousemove', (e) => {
     if (!isDraggingP1 || !battleActive) return;
     const rect = simCanvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
-    p1State.vx = (mx - p1State.x) * 0.35;
-    p1State.vy = (my - p1State.y) * 0.35;
+    p1State.x = mx;
+    p1State.y = my;
+    p1State.vx = (mx - p1State.x) * 0.5;
+    p1State.vy = (my - p1State.y) * 0.5;
   });
   window.addEventListener('mouseup', () => { isDraggingP1 = false; });
+  simCanvas.addEventListener('mouseleave', () => { isDraggingP1 = false; });
 
   // Special Action Buttons
   const dashBtn = document.getElementById('special-dash-btn');
@@ -1060,8 +1073,8 @@ function updateAndDrawStadium() {
   }
 
   if (battleActive) {
-    // Player Keyboard Steering (WASD / Arrows)
-    const steerPower = 0.5;
+    // Enhanced Player Keyboard Steering (WASD / Arrows) with high responsiveness
+    const steerPower = 0.85;
     if (keysPressed['ArrowUp'] || keysPressed['KeyW']) p1State.vy -= steerPower;
     if (keysPressed['ArrowDown'] || keysPressed['KeyS']) p1State.vy += steerPower;
     if (keysPressed['ArrowLeft'] || keysPressed['KeyA']) p1State.vx -= steerPower;
@@ -1081,23 +1094,23 @@ function updateAndDrawStadium() {
       aiPull = 0.22;
     }
 
-    // Physics Update: Gravity pull towards center crater
+    // Physics Update: Gravity pull towards center crater - much slower stamina drain for long endurance battles
     [p1State, p2State].forEach((p, idx) => {
       const dx = cx - p.x;
       const dy = cy - p.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      const pull = (idx === 1 && p2Ai === 'defender') ? aiPull : 0.12;
+      const pull = (idx === 1 && p2Ai === 'defender') ? aiPull : 0.08;
       p.vx += (dx / dist) * pull;
       p.vy += (dy / dist) * pull;
 
       p.x += p.vx;
       p.y += p.vy;
 
-      // Friction & Stamina loss (reduced drain for longer, more endurance-focused battles)
-      p.vx *= 0.994;
-      p.vy *= 0.994;
-      p.hp -= (idx === 0 ? (0.012 * p1State.drain) : 0.014);
+      // Friction & Stamina loss (ultra low drain for prolonged, highly interactive endurance battles)
+      p.vx *= 0.996;
+      p.vy *= 0.996;
+      p.hp -= (idx === 0 ? (0.004 * p1State.drain) : 0.005);
 
       // Wall bounce & Over Finish check
       if (dist + p.radius > arenaRadius) {
@@ -1106,9 +1119,9 @@ function updateAndDrawStadium() {
         const dot = p.vx * nx + p.vy * ny;
         p.vx -= 1.8 * dot * nx;
         p.vy -= 1.8 * dot * ny;
-        p.hp -= 0.8;
+        p.hp -= 0.3;
 
-        if (dist > arenaRadius + 10) {
+        if (dist > arenaRadius + 15) {
           battleActive = false;
           const winner = idx === 0 ? currentSelectedOpponent.name : 'PLAYER 1 (Your Build)';
           const loser = idx === 0 ? 'PLAYER 1' : currentSelectedOpponent.name;
