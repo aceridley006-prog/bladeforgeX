@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLADE FORGE | Custom Beyblade Workshop & Configurator</title>
+  <meta name="description" content="Engineer, customize, and battle test your ultimate custom Beyblade with precision parts, die-cast alloy blades, custom ratchets, and performance bits.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Particle Grid -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-compact-disc fa-spin-pulse"></i></span>
+        <span class="logo-text">BLADE<span class="highlight">FORGE</span></span>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="#forge" class="active">Customizer</a></li>
+        <li><a href="#parts">Parts Catalog</a></li>
+        <li><a href="#meta-combos">Meta Combos</a></li>
+        <li><a href="#simulator">Battle Sim</a></li>
+        <li><a href="#specs">Engineering</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn btn-secondary" id="open-share-btn"><i class="fa-solid fa-share-nodes"></i> Share Build</button>
+        <button class="btn btn-primary" id="open-cart-btn">
+          <i class="fa-solid fa-cart-shopping"></i> Build Order <span class="cart-badge" id="cart-count">1</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-tag"><i class="fa-solid fa-bolt"></i> NEXT-GEN BEYBLADE ENGINEERING</div>
+      <h1 class="hero-title">ENGINEER YOUR <span class="text-gradient">ULTIMATE BLADE</span></h1>
+      <p class="hero-subtitle">
+        Design custom high-performance Beyblades down to the millimeter. Precision die-cast metal blades, custom tooth ratchets, and specialized performance bits tuned for maximum RPM and burst resistance.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#forge" class="btn btn-glow btn-large"><i class="fa-solid fa-sliders"></i> Launch Configurator</a>
+        <a href="#simulator" class="btn btn-outline btn-large"><i class="fa-solid fa-gamepad"></i> Test Battle Sim</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number" data-target="14500">14.5K+</span>
+          <span class="stat-label">RPM Max Speed</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="320">320+</span>
+          <span class="stat-label">Part Combinations</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">99.4%</span>
+          <span class="stat-label">Tournament Approval</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="spinner-ring outer"></div>
+      <div class="spinner-ring inner"></div>
+      <div class="hero-blade-preview">
+        <canvas id="hero-blade-canvas" width="400" height="400"></canvas>
+      </div>
+      <div class="blade-badge">
+        <span class="badge-dot"></span> LIVE 3D SPIN STUDIO
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Beyblade Configurator Section -->
+  <section class="forge-section" id="forge">
+    <div class="section-header center">
+      <span class="subtitle"><i class="fa-solid fa-screwdriver-wrench"></i> THE WORKSHOP</span>
+      <h2>3D CUSTOM <span class="text-gradient">BLADE CONFIGURATOR</span></h2>
+      <p>Select your Blade layer, ratchet gear, bit tip, and color scheme. Watch stats adjust in real-time.</p>
+    </div>
+
+    <div class="forge-container">
+      
+      <!-- Left Column: Visual Canvas & Controls -->
+      <div class="forge-visual-card">
+        <div class="stage-header">
+          <div class="build-title-wrapper">
+            <span class="code-badge" id="build-code-display">BF-SCY-360-F</span>
+            <input type="text" id="blade-custom-name" value="Scythe Drake 3-60 Flat" class="custom-name-input" maxlength="28" />
+          </div>
+          <div class="stage-controls">
+            <button class="stage-btn" id="toggle-spin-btn" title="Toggle Rotation"><i class="fa-solid fa-rotate-right"></i></button>
+            <button class="stage-btn" id="toggle-sparks-btn" title="Toggle Friction Sparks"><i class="fa-solid fa-fire-flame-curved"></i></button>
+            <button class="stage-btn" id="reset-build-btn" title="Reset Build"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="blade-forge-canvas" width="480" height="480"></canvas>
+          
+          <div class="spin-rpm-meter">
+            <div class="rpm-bar" id="rpm-bar-fill"></div>
+            <span id="rpm-text"><i class="fa-solid fa-gauge-high"></i> <span id="current-rpm">12,400</span> RPM</span>
+          </div>
+
+          <div class="spin-direction-indicator">
+            <span class="spin-chip active" id="spin-dir-chip"><i class="fa-solid fa-rotate-right"></i> Right Spin</span>
+          </div>
+        </div>
+
+        <!-- Speed & Angle Control Sliders -->
+        <div class="stage-sliders">
+          <div class="slider-group">
+            <label for="speed-slider"><i class="fa-solid fa-gauge"></i> Spin Speed</label>
+            <input type="range" id="speed-slider" min="0" max="100" value="75">
+          </div>
+          <div class="slider-group">
+            <label for="angle-slider"><i class="fa-solid fa-cube"></i> Tilt Angle</label>
+            <input type="range" id="angle-slider" min="0" max="45" value="15">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Parts Selector & Stats Radar -->
+      <div class="forge-controls-card">
+        
+        <!-- Tab Navigation for Customization -->
+        <div class="forge-tabs">
+          <button class="tab-btn active" data-tab="blade"><i class="fa-solid fa-shield-halved"></i> 1. Blade</button>
+          <button class="tab-btn" data-tab="ratchet"><i class="fa-solid fa-gear"></i> 2. Ratchet</button>
+          <button class="tab-btn" data-tab="bit"><i class="fa-solid fa-location-crosshairs"></i> 3. Bit</button>
+          <button class="tab-btn" data-tab="color"><i class="fa-solid fa-palette"></i> 4. Finish</button>
+        </div>
+
+        <!-- Tab Content Containers -->
+        <div class="tab-content active" id="tab-blade">
+          <h4 class="tab-heading">Select Main Blade Layer</h4>
+          <p class="tab-sub">Defines primary contact points, weight distribution, and offensive type.</p>
+          
+          <div class="parts-grid" id="blade-parts-grid">
+            <!-- Dynamic Blade Options Inserted via JS -->
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-ratchet">
+          <h4 class="tab-heading">Select Ratchet Gear</h4>
+          <p class="tab-sub">Controls height clearance, center of mass, and ratchet burst lock security.</p>
+          
+          <div class="parts-grid" id="ratchet-parts-grid">
+            <!-- Dynamic Ratchet Options Inserted via JS -->
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-bit">
+          <h4 class="tab-heading">Select Performance Bit Tip</h4>
+          <p class="tab-sub">Determines stadium movement pattern, friction, acceleration, and stamina retention.</p>
+          
+          <div class="parts-grid" id="bit-parts-grid">
+            <!-- Dynamic Bit Options Inserted via JS -->
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-color">
+          <h4 class="tab-heading">Select Custom Alloy Anodization & Accents</h4>
+          <p class="tab-sub">Premium scratch-resistant thermal powder coating & metallic finish.</p>
+          
+          <div class="color-options">
+            <div class="color-picker-group">
+              <label>Primary Metal Finish</label>
+              <div class="swatch-list" id="primary-color-swatches">
+                <button class="color-swatch active" data-color="#3b82f6" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);"></button>
+                <button class="color-swatch" data-color="#ef4444" style="background: linear-gradient(135deg, #ef4444, #991b1b);"></button>
+                <button class="color-swatch" data-color="#eab308" style="background: linear-gradient(135deg, #facc15, #ca8a04);"></button>
+                <button class="color-swatch" data-color="#10b981" style="background: linear-gradient(135deg, #34d399, #047857);"></button>
+                <button class="color-swatch" data-color="#a855f7" style="background: linear-gradient(135deg, #c084fc, #7e22ce);"></button>
+                <button class="color-swatch" data-color="#111827" style="background: linear-gradient(135deg, #374151, #111827);"></button>
+                <button class="color-swatch" data-color="#f43f5e" style="background: linear-gradient(135deg, #fb7185, #be123c);"></button>
+              </div>
+            </div>
+
+            <div class="color-picker-group">
+              <label>Core Emblem Accent Color</label>
+              <div class="swatch-list" id="accent-color-swatches">
+                <button class="color-swatch active" data-accent="#06b6d4" style="background: #06b6d4;"></button>
+                <button class="color-swatch" data-accent="#f97316" style="background: #f97316;"></button>
+                <button class="color-swatch" data-accent="#84cc16" style="background: #84cc16;"></button>
+                <button class="color-swatch" data-accent="#ec4899" style="background: #ec4899;"></button>
+                <button class="color-swatch" data-accent="#ffffff" style="background: #ffffff;"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Performance Radar & Stats Card -->
+        <div class="performance-card">
+          <div class="card-header">
+            <span><i class="fa-solid fa-chart-radar"></i> COMBINED PERFORMANCE PROFILE</span>
+            <span class="type-badge" id="build-type-tag">ATTACK TYPE</span>
+          </div>
+
+          <div class="stats-overview">
+            <div class="stat-bar-group">
+              <div class="stat-bar-header">
+                <span>Attack Power</span>
+                <span id="val-attack">85</span>
+              </div>
+              <div class="stat-track"><div class="stat-fill attack" id="bar-attack" style="width: 85%"></div></div>
+            </div>
+
+            <div class="stat-bar-group">
+              <div class="stat-bar-header">
+                <span>Defense / Stability</span>
+                <span id="val-defense">60</span>
+              </div>
+              <div class="stat-track"><div class="stat-fill defense" id="bar-defense" style="width: 60%"></div></div>
+            </div>
+
+            <div class="stat-bar-group">
+              <div class="stat-bar-header">
+                <span>Stamina Duration</span>
+                <span id="val-stamina">45</span>
+              </div>
+              <div class="stat-track"><div class="stat-fill stamina" id="bar-stamina" style="width: 45%"></div></div>
+            </div>
+
+            <div class="stat-bar-group">
+              <div class="stat-bar-header">
+                <span>Burst Resistance</span>
+                <span id="val-burst">90</span>
+              </div>
+              <div class="stat-track"><div class="stat-fill burst" id="bar-burst" style="width: 90%"></div></div>
+            </div>
+
+            <div class="stat-bar-group">
+              <div class="stat-bar-header">
+                <span>Total Weight</span>
+                <span id="val-weight">42.8g</span>
+              </div>
+              <div class="stat-track"><div class="stat-fill weight" id="bar-weight" style="width: 72%"></div></div>
+            </div>
+          </div>
+
+          <div class="checkout-bar">
+            <div class="price-container">
+              <span class="price-label">Total Custom Price</span>
+              <span class="price-value" id="build-total-price">$34.99</span>
+            </div>
+            <button class="btn btn-glow btn-block" id="add-custom-build-btn">
+              <i class="fa-solid fa-cart-plus"></i> Add Custom Build to Order
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pre-Built Meta Combos Section -->
+  <section class="meta-section" id="meta-combos">
+    <div class="section-header center">
+      <span class="subtitle"><i class="fa-solid fa-trophy"></i> TOURNAMENT DOMINATORS</span>
+      <h2>META COMBOS & <span class="text-gradient">PRESET BUILDS</span></h2>
+      <p>Curated champion combinations used by top international bladers.</p>
+    </div>
+
+    <div class="meta-grid">
+      
+      <div class="meta-card">
+        <div class="meta-tag attack"><i class="fa-solid fa-bolt"></i> S-TIER ATTACK</div>
+        <div class="meta-icon"><i class="fa-solid fa-dragon"></i></div>
+        <h3>DRAKE BUSTER 1-60 FLAT</h3>
+        <p>Devastating right-spin smash attack blade designed for instant stadium outs and early bursts.</p>
+        <div class="meta-parts-list">
+          <span><strong>Blade:</strong> Drake Buster (Die-Cast Zinc)</span>
+          <span><strong>Ratchet:</strong> 1-60 High Torque</span>
+          <span><strong>Bit:</strong> Rubber Flat Tip</span>
+        </div>
+        <div class="meta-card-footer">
+          <span class="meta-price">$38.99</span>
+          <button class="btn btn-outline btn-sm load-preset-btn" data-preset="drake">Load Preset</button>
+        </div>
+      </div>
+
+      <div class="meta-card featured">
+        <div class="featured-badge">MOST POPULAR</div>
+        <div class="meta-tag stamina"><i class="fa-solid fa-dharmachakra"></i> S-TIER STAMINA</div>
+        <div class="meta-icon"><i class="fa-solid fa-shield-cat"></i></div>
+        <h3>SCYTHE ROD 9-60 BALL</h3>
+        <p>Near-frictionless outer weight distribution with high gyro stability. Dominates long spin endurance battles.</p>
+        <div class="meta-parts-list">
+          <span><strong>Blade:</strong> Scythe Rod (Aerodynamic Alloy)</span>
+          <span><strong>Ratchet:</strong> 9-60 Balanced</span>
+          <span><strong>Bit:</strong> Polycarbonate Ball Tip</span>
+        </div>
+        <div class="meta-card-footer">
+          <span class="meta-price">$36.99</span>
+          <button class="btn btn-glow btn-sm load-preset-btn" data-preset="scythe">Load Preset</button>
+        </div>
+      </div>
+
+      <div class="meta-card">
+        <div class="meta-tag defense"><i class="fa-solid fa-shield"></i> S-TIER DEFENSE</div>
+        <div class="meta-icon"><i class="fa-solid fa-fort-awesome"></i></div>
+        <h3>PHOENIX SHIELD 5-60 HEXA</h3>
+        <p>Heavy armor perimeter absorbs incoming recoil shock. Hexagonal bit tip locks position in central crater.</p>
+        <div class="meta-parts-list">
+          <span><strong>Blade:</strong> Phoenix Shield (Heavy Metal)</span>
+          <span><strong>Ratchet:</strong> 5-60 Burst Lock</span>
+          <span><strong>Bit:</strong> Hexa Rubber Needle</span>
+        </div>
+        <div class="meta-card-footer">
+          <span class="meta-price">$39.99</span>
+          <button class="btn btn-outline btn-sm load-preset-btn" data-preset="phoenix">Load Preset</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Battle Stadium Simulator Section -->
+  <section class="simulator-section" id="simulator">
+    <div class="section-header center">
+      <span class="subtitle"><i class="fa-solid fa-fire"></i> BEYSTADIUM ARENA</span>
+      <h2>INTERACTIVE <span class="text-gradient">BATTLE SIMULATOR</span></h2>
+      <p>Test your active custom Beyblade against a CPU rival in real-time stadium physics!</p>
+    </div>
+
+    <div class="simulator-box">
+      <div class="sim-controls-top">
+        <div class="sim-player-info">
+          <span class="player-dot p1"></span>
+          <span><strong>PLAYER (You):</strong> <span id="sim-p1-name">Custom Build</span></span>
+        </div>
+
+        <button class="btn btn-glow" id="launch-battle-btn"><i class="fa-solid fa-play"></i> 3, 2, 1... LET IT RIP!</button>
+
+        <div class="sim-player-info">
+          <span><strong>RIVAL CPU:</strong> Viper Tail 4-60 Taper</span>
+          <span class="player-dot p2"></span>
+        </div>
+      </div>
+
+      <div class="stadium-canvas-container">
+        <canvas id="stadium-canvas" width="700" height="420"></canvas>
+        
+        <div class="stadium-overlay" id="stadium-start-overlay">
+          <div class="overlay-text">
+            <h3>ARENA READY</h3>
+            <p>Click "LET IT RIP!" to launch both tops into the Beystadium arena.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-stats-live">
+        <div class="live-hp">
+          <label>P1 Stamina</label>
+          <div class="hp-track"><div class="hp-fill p1" id="p1-hp-bar" style="width: 100%"></div></div>
+        </div>
+        <div class="collision-log" id="sim-log-box">
+          Ready for battle initialization...
+        </div>
+        <div class="live-hp">
+          <label>CPU Stamina</label>
+          <div class="hp-track"><div class="hp-fill p2" id="p2-hp-bar" style="width: 100%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Precision Parts Engineering Section -->
+  <section class="specs-section" id="specs">
+    <div class="section-header center">
+      <span class="subtitle"><i class="fa-solid fa-atom"></i> MATERIAL SCIENCE</span>
+      <h2>ENGINEERED FOR <span class="text-gradient">MAXIMUM RECOIL</span></h2>
+      <p>Built with aerospace-grade materials and micro-tolerances for peak competitive performance.</p>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-card">
+        <div class="spec-icon"><i class="fa-solid fa-cubes"></i></div>
+        <h3>Die-Cast Zinc Alloy</h3>
+        <p>High-density metal perimeter weighting delivers extreme momentum and maximum impact energy on contact.</p>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-icon"><i class="fa-solid fa-lock"></i></div>
+        <h3>Burst-Lock Tooth Ratchet</h3>
+        <p>Multi-step internal teeth prevent premature burst finishes under heavy rotational impact force.</p>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+        <h3>X-Celerator Gear Bit</h3>
+        <p>Precision molded gear tips engage X-Extreme stadium rails for hyper-speed dash attacks up to 60 km/h.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <span class="logo-icon"><i class="fa-solid fa-compact-disc"></i></span>
+          <span class="logo-text">BLADE<span class="highlight">FORGE</span></span>
+        </a>
+        <p>The world's leading custom Beyblade engineering lab and high-performance part manufacturer.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#forge">Configurator</a></li>
+          <li><a href="#meta-combos">Meta Combos</a></li>
+          <li><a href="#simulator">Battle Simulator</a></li>
+          <li><a href="#specs">Materials</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4>Join the Tournament Club</h4>
+        <p>Get exclusive early access to drop limited release metallic blades & custom anodized parts.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Enter your email...">
+          <button class="btn btn-glow"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 BLADE FORGE Inc. All rights reserved. Compatible with Beyblade X systems.</p>
+    </div>
+  </footer>
+
+  <!-- Modal: Order & Cart Summary -->
+  <div class="modal-overlay" id="cart-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="close-cart-btn"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="modal-title"><i class="fa-solid fa-cart-shopping"></i> Your Custom Build Order</h3>
+      
+      <div class="cart-items-list" id="cart-items-container">
+        <!-- Rendered via JS -->
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="modal-subtotal">$34.99</span>
+        </div>
+        <div class="summary-row">
+          <span>Precision Assembly & Balance Calibration</span>
+          <span class="text-success">FREE</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="modal-total" class="price-value">$34.99</span>
+        </div>
+      </div>
+
+      <button class="btn btn-glow btn-large btn-block" onclick="alert('Thank you! Your custom Beyblade configuration has been queued for precision assembly and dispatch.')">
+        Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- JS File -->
+  <script src="app.js"></script>
+</body>
+</html>
