@@ -1230,6 +1230,13 @@ function initStadiumSimulator() {
     });
   }
 
+  function renderSimLoop() {
+    updateAndDrawStadium();
+    requestAnimationFrame(renderSimLoop);
+  }
+  renderSimLoop();
+}
+
 function startLaunchChargingPhase() {
   const welcomeBox = document.getElementById('overlay-welcome-box');
   const powerContainer = document.getElementById('launch-power-container');
