@@ -976,13 +976,16 @@ function executeLaunch() {
   }
 
   const overlay = document.getElementById('stadium-start-overlay');
-  if (overlay) overlay.classList.add('hidden');
+  if (overlay) {
+    overlay.classList.add('hidden');
+    overlay.style.display = 'none'; // Ensure it's completely hidden and removed from view
+  }
 
   const powerContainer = document.getElementById('launch-power-container');
   if (powerContainer) powerContainer.classList.add('hidden');
 
   const welcomeBox = document.getElementById('overlay-welcome-box');
-  if (welcomeBox) welcomeBox.classList.remove('hidden');
+  if (welcomeBox) welcomeBox.classList.add('hidden');
 
   const actionOverlay = document.getElementById('battle-action-overlay');
   if (actionOverlay) actionOverlay.classList.remove('hidden');
