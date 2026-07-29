@@ -1036,6 +1036,60 @@ p {
   justify-content: space-between;
   margin-bottom: 20px;
   padding: 0 10px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.sim-config-group {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.sim-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sim-select-wrapper label {
+  font-size: 0.75rem;
+  font-family: var(--font-sub);
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.custom-select {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sub);
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.custom-select:hover, .custom-select:focus {
+  border-color: var(--color-primary);
+}
+
+.battle-action-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.battle-action-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .sim-player-info {

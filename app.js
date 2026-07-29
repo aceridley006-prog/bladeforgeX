@@ -708,13 +708,75 @@ function updateStats() {
 }
 
 // ==========================================
-// 7. BEYSTADIUM BATTLE SIMULATOR ENGINE
+// 7. BEYSTADIUM BATTLE SIMULATOR ENGINE (UPGRADED)
 // ==========================================
 let simCanvas, simCtx;
 let battleActive = false;
 let p1State = { x: 200, y: 210, vx: 0, vy: 0, hp: 100, radius: 28, color: '#3b82f6' };
 let p2State = { x: 500, y: 210, vx: 0, vy: 0, hp: 100, radius: 28, color: '#ef4444' };
 let simSparks = [];
+
+const opponentsList = {
+  viper: {
+    id: 'viper',
+    name: 'Viper Tail 4-60 Taper',
+    color: '#ef4444',
+    shape: 'viper-fangs',
+    bladesCount: 3,
+    ai: 'balanced',
+    attack: 75,
+    defense: 65,
+    stamina: 70
+  },
+  drake: {
+    id: 'drake',
+    name: 'Drake Buster 1-60 Flat',
+    color: '#f97316',
+    shape: 'aggressive-spikes',
+    bladesCount: 2,
+    ai: 'aggressive',
+    attack: 95,
+    defense: 45,
+    stamina: 55
+  },
+  scythe: {
+    id: 'scythe',
+    name: 'Scythe Rod 9-60 Ball',
+    color: '#34d399',
+    shape: 'scythe-blade',
+    bladesCount: 4,
+    ai: 'stamina',
+    attack: 55,
+    defense: 75,
+    stamina: 98
+  },
+  phoenix: {
+    id: 'phoenix',
+    name: 'Phoenix Shield 5-60 Hexa',
+    color: '#a855f7',
+    shape: 'shield-round',
+    bladesCount: 6,
+    ai: 'defender',
+    attack: 60,
+    defense: 98,
+    stamina: 70
+  },
+  wizard: {
+    id: 'wizard',
+    name: 'Wizard Arrow 3-80 Needle',
+    color: '#06b6d4',
+    shape: 'arrow-wings',
+    bladesCount: 3,
+    ai: 'sniper',
+    attack: 68,
+    defense: 72,
+    stamina: 85
+  }
+};
+
+let currentSelectedOpponent = opponentsList.drake;
+let specialDashAvailable = true;
+let specialBrakeAvailable = true;
 
 function initStadiumSimulator() {
   simCanvas = document.getElementById('stadium-canvas');
@@ -724,6 +786,68 @@ function initStadiumSimulator() {
   const launchBtn = document.getElementById('launch-battle-btn');
   if (launchBtn) {
     launchBtn.addEventListener('click', startBattle);
+  }
+
+  const opponentSelect = document.getElementById('opponent-select');
+  if (opponentSelect) {
+    opponentSelect.addEventListener('change', (e) => {
+      const key = e.target.value;
+      if (opponentsList[key]) {
+        currentSelectedOpponent = opponentsList[key];
+        const p2NameEl = document.getElementById('sim-p2-name');
+        const p2DotEl = document.getElementById('sim-p2-dot');
+        if (p2NameEl) p2NameEl.innerText = currentSelectedOpponent.name;
+        if (p2DotEl) {
+          p2DotEl.style.background = currentSelectedOpponent.color;
+          p2DotEl.style.boxShadow = `0 0 10px ${currentSelectedOpponent.color}`;
+        }
+      }
+    });
+  }
+
+  // Special Action Buttons
+  const dashBtn = document.getElementById('special-dash-btn');
+  if (dashBtn) {
+    dashBtn.addEventListener('click', () => {
+      if (!battleActive || !specialDashAvailable) return;
+      specialDashAvailable = false;
+      dashBtn.classList.add('disabled');
+      // Give P1 a massive velocity burst towards P2
+      const angle = Math.atan2(p2State.y - p1State.y, p2State.x - p1State.x);
+      p1State.vx += Math.cos(angle) * 14;
+      p1State.vy += Math.sin(angle) * 14;
+      p2State.hp -= 15;
+      
+      const logBox = document.getElementById('sim-log-box');
+      if (logBox) logBox.innerText = '⚡ X-EXTREME DASH UNLEASHED! Massive direct impact on rival!';
+      
+      // Spawn sparks
+      for (let i = 0; i < 20; i++) {
+        simSparks.push({
+          x: p1State.x,
+          y: p1State.y,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.5) * 16,
+          life: 1.2,
+          color: '#3b82f6'
+        });
+      }
+    });
+  }
+
+  const brakeBtn = document.getElementById('special-brake-btn');
+  if (brakeBtn) {
+    brakeBtn.addEventListener('click', () => {
+      if (!battleActive || !specialBrakeAvailable) return;
+      specialBrakeAvailable = false;
+      brakeBtn.classList.add('disabled');
+      p1State.hp = Math.min(100, p1State.hp + 12);
+      p1State.vx *= 0.2;
+      p1State.vy *= 0.2;
+
+      const logBox = document.getElementById('sim-log-box');
+      if (logBox) logBox.innerText = '🛡️ STABILIZE ACTIVATED! Burst teeth locked, stamina restored!';
+    });
   }
 
   function renderSimLoop() {
@@ -737,16 +861,59 @@ function startBattle() {
   const overlay = document.getElementById('stadium-start-overlay');
   if (overlay) overlay.classList.add('hidden');
 
+  const actionOverlay = document.getElementById('battle-action-overlay');
+  if (actionOverlay) actionOverlay.classList.remove('hidden');
+
+  specialDashAvailable = true;
+  specialBrakeAvailable = true;
+  const dashBtn = document.getElementById('special-dash-btn');
+  const brakeBtn = document.getElementById('special-brake-btn');
+  if (dashBtn) dashBtn.classList.remove('disabled');
+  if (brakeBtn) brakeBtn.classList.remove('disabled');
+
+  const launchPowerSelect = document.getElementById('launch-power-select');
+  let launchSpeed = 5;
+  let staminaDrainMultiplier = 1.0;
+  if (launchPowerSelect) {
+    if (launchPowerSelect.value === 'xdash') {
+      launchSpeed = 8;
+      staminaDrainMultiplier = 1.3;
+    } else if (launchPowerSelect.value === 'stamina') {
+      launchSpeed = 3;
+      staminaDrainMultiplier = 0.6;
+    }
+  }
+
   const cx = simCanvas.width / 2;
   const cy = simCanvas.height / 2;
 
-  // Reset Tops
-  p1State = { x: cx - 180, y: cy, vx: 4, vy: -3, hp: 100, radius: 30, color: state.primaryColor };
-  p2State = { x: cx + 180, y: cy, vx: -4, vy: 3, hp: 100, radius: 30, color: '#ef4444' };
+  // Reset Tops with Launch parameters
+  p1State = {
+    x: cx - 160,
+    y: cy,
+    vx: launchSpeed,
+    vy: -launchSpeed * 0.7,
+    hp: 100,
+    radius: 30,
+    color: state.primaryColor,
+    drain: staminaDrainMultiplier
+  };
+
+  p2State = {
+    x: cx + 160,
+    y: cy,
+    vx: -launchSpeed * 0.9,
+    vy: launchSpeed * 0.7,
+    hp: 100,
+    radius: 30,
+    color: currentSelectedOpponent.color,
+    drain: 1.0
+  };
+
   battleActive = true;
 
   const logBox = document.getElementById('sim-log-box');
-  if (logBox) logBox.innerText = '⚡ 3, 2, 1... LET IT RIP! Tops launched into arena!';
+  if (logBox) logBox.innerText = `⚡ 3, 2, 1... LET IT RIP! Battle vs ${currentSelectedOpponent.name}!`;
 }
 
 function updateAndDrawStadium() {
@@ -768,28 +935,43 @@ function updateAndDrawStadium() {
   arenaGrad.addColorStop(1, '#334155');
   simCtx.fillStyle = arenaGrad;
   simCtx.fill();
-  simCtx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+  simCtx.strokeStyle = 'rgba(59, 130, 246, 0.5)';
   simCtx.lineWidth = 6;
   simCtx.stroke();
 
   // Draw X-Celerator Rail Outer Ring
   simCtx.beginPath();
   simCtx.arc(cx, cy, arenaRadius - 15, 0, Math.PI * 2);
-  simCtx.strokeStyle = 'rgba(250, 204, 21, 0.3)';
+  simCtx.strokeStyle = 'rgba(250, 204, 21, 0.4)';
   simCtx.lineWidth = 3;
   simCtx.setLineDash([12, 8]);
   simCtx.stroke();
   simCtx.setLineDash([]);
 
   if (battleActive) {
-    // 2. Physics Update: Gravity pull towards center crater
-    [p1State, p2State].forEach(p => {
+    // AI Behavior for P2 (Rival)
+    const p2Ai = currentSelectedOpponent.ai;
+    let aiPull = 0.12;
+    if (p2Ai === 'aggressive') {
+      const angToP1 = Math.atan2(p1State.y - p2State.y, p1State.x - p2State.x);
+      p2State.vx += Math.cos(angToP1) * 0.18;
+      p2State.vy += Math.sin(angToP1) * 0.18;
+    } else if (p2Ai === 'stamina') {
+      p2State.vx -= 0.04;
+      p2State.vy -= 0.04;
+    } else if (p2Ai === 'defender') {
+      aiPull = 0.22;
+    }
+
+    // Physics Update: Gravity pull towards center crater
+    [p1State, p2State].forEach((p, idx) => {
       const dx = cx - p.x;
       const dy = cy - p.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      p.vx += (dx / dist) * 0.12;
-      p.vy += (dy / dist) * 0.12;
+      const pull = (idx === 1 && p2Ai === 'defender') ? aiPull : 0.12;
+      p.vx += (dx / dist) * pull;
+      p.vy += (dy / dist) * pull;
 
       p.x += p.vx;
       p.y += p.vy;
@@ -797,16 +979,26 @@ function updateAndDrawStadium() {
       // Friction & Stamina loss
       p.vx *= 0.992;
       p.vy *= 0.992;
-      p.hp -= 0.05;
+      p.hp -= (idx === 0 ? (0.04 * p1State.drain) : 0.045);
 
-      // Wall bounce
+      // Wall bounce & Over Finish check
       if (dist + p.radius > arenaRadius) {
         const nx = dx / dist;
         const ny = dy / dist;
         const dot = p.vx * nx + p.vy * ny;
         p.vx -= 1.8 * dot * nx;
         p.vy -= 1.8 * dot * ny;
-        p.hp -= 1.5;
+        p.hp -= 2.0;
+
+        if (dist > arenaRadius + 10) {
+          battleActive = false;
+          const winner = idx === 0 ? currentSelectedOpponent.name : 'PLAYER 1 (Your Build)';
+          const loser = idx === 0 ? 'PLAYER 1' : currentSelectedOpponent.name;
+          const logBox = document.getElementById('sim-log-box');
+          if (logBox) logBox.innerText = `🚀 OVER FINISH! ${loser} knocked out of the Beystadium! Winner: ${winner}!`;
+          const actionOverlay = document.getElementById('battle-action-overlay');
+          if (actionOverlay) actionOverlay.classList.add('hidden');
+        }
       }
     });
 
@@ -817,68 +1009,79 @@ function updateAndDrawStadium() {
     const minDist = p1State.radius + p2State.radius;
 
     if (cdist < minDist) {
-      // Elastic Smash Collision
       const angle = Math.atan2(cdy, cdx);
       const targetX = p1State.x + Math.cos(angle) * minDist;
       const targetY = p1State.y + Math.sin(angle) * minDist;
 
-      const ax = (targetX - p2State.x) * 0.4;
-      const ay = (targetY - p2State.y) * 0.4;
+      const ax = (targetX - p2State.x) * 0.45;
+      const ay = (targetY - p2State.y) * 0.45;
 
       p1State.vx -= ax;
       p1State.vy -= ay;
       p2State.vx += ax;
       p2State.vy += ay;
 
-      // Damage calculation based on attack stats
-      const damageP1 = 4.0;
-      const damageP2 = 5.5;
+      const p1Attack = state.currentBlade.attack || 75;
+      const p2Attack = currentSelectedOpponent.attack || 70;
+      const damageP1 = (p2Attack / 55) * 3.5;
+      const damageP2 = (p1Attack / 55) * 3.5;
+
       p1State.hp -= damageP1;
       p2State.hp -= damageP2;
 
-      // Generate Collision Sparks
       const sparkX = (p1State.x + p2State.x) / 2;
       const sparkY = (p1State.y + p2State.y) / 2;
-      for (let i = 0; i < 12; i++) {
+      for (let i = 0; i < 14; i++) {
         simSparks.push({
           x: sparkX,
           y: sparkY,
-          vx: (Math.random() - 0.5) * 12,
-          vy: (Math.random() - 0.5) * 12,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.5) * 14,
           life: 1.0,
-          color: '#facc15'
+          color: Math.random() > 0.5 ? '#facc15' : '#38bdf8'
         });
       }
 
       const logBox = document.getElementById('sim-log-box');
-      if (logBox) logBox.innerText = `💥 HEAVY IMPACT! Recoil strike at ${Math.round(cdist)} Force!`;
+      if (logBox) {
+        const impactForce = Math.round(Math.abs(p1State.vx) + Math.abs(p2State.vx) * 10);
+        logBox.innerText = `💥 EXTREME CLASH! X-Rail Impact Force: ${impactForce}!`;
+      }
     }
 
-    // Check Win/Loss Condition
     if (p1State.hp <= 0 || p2State.hp <= 0) {
       battleActive = false;
-      const winner = p1State.hp > p2State.hp ? 'PLAYER 1 (Your Build)' : 'RIVAL CPU';
+      const winner = p1State.hp > p2State.hp ? 'PLAYER 1 (Your Build)' : currentSelectedOpponent.name;
       const logBox = document.getElementById('sim-log-box');
-      if (logBox) logBox.innerText = `🏆 SURVIVAL FINISH! Winner: ${winner}!`;
+      if (logBox) logBox.innerText = `🏆 SPIN FINISH! Winner: ${winner}!`;
+      const actionOverlay = document.getElementById('battle-action-overlay');
+      if (actionOverlay) actionOverlay.classList.add('hidden');
     }
   }
 
-  // Update HP bars
+  // Update HP bars and texts
   const p1Bar = document.getElementById('p1-hp-bar');
-  if (p1Bar) p1Bar.style.width = `${Math.max(0, p1State.hp)}%`;
-
+  const p1Text = document.getElementById('p1-hp-text');
   const p2Bar = document.getElementById('p2-hp-bar');
-  if (p2Bar) p2Bar.style.width = `${Math.max(0, p2State.hp)}%`;
+  const p2Text = document.getElementById('p2-hp-text');
+
+  const p1HpVal = Math.max(0, Math.round(p1State.hp));
+  const p2HpVal = Math.max(0, Math.round(p2State.hp));
+
+  if (p1Bar) p1Bar.style.width = `${p1HpVal}%`;
+  if (p1Text) p1Text.innerText = `${p1HpVal}%`;
+  if (p2Bar) p2Bar.style.width = `${p2HpVal}%`;
+  if (p2Text) p2Text.innerText = `${p2HpVal}%`;
 
   // Draw P1 and P2 Tops
   [p1State, p2State].forEach((p, idx) => {
     simCtx.save();
     simCtx.translate(p.x, p.y);
-    simCtx.rotate(Date.now() * 0.02 * (idx === 0 ? 1 : -1));
+    simCtx.rotate(Date.now() * 0.025 * (idx === 0 ? 1 : -1));
 
     drawBeybladeGraphic(simCtx, 0, 0, p.radius, {
-      bladesCount: idx === 0 ? state.currentBlade.bladesCount : 3,
-      shape: idx === 0 ? state.currentBlade.shape : 'aggressive-spikes',
+      bladesCount: idx === 0 ? state.currentBlade.bladesCount : currentSelectedOpponent.bladesCount,
+      shape: idx === 0 ? state.currentBlade.shape : currentSelectedOpponent.shape,
       primaryColor: p.color,
       accentColor: idx === 0 ? state.accentColor : '#ffffff',
       ratchetTeeth: 4
@@ -904,6 +1107,7 @@ function updateAndDrawStadium() {
     simCtx.globalAlpha = 1.0;
   });
 }
+
 
 // ==========================================
 // 8. CART & ORDER SUMMARY MODAL

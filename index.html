@@ -342,21 +342,42 @@
     <div class="section-header center">
       <span class="subtitle"><i class="fa-solid fa-fire"></i> BEYSTADIUM ARENA</span>
       <h2>INTERACTIVE <span class="text-gradient">BATTLE SIMULATOR</span></h2>
-      <p>Test your active custom Beyblade against a CPU rival in real-time stadium physics!</p>
+      <p>Test your active custom Beyblade against multiple rival champions with distinct AI personalities and special launch controls!</p>
     </div>
 
     <div class="simulator-box">
       <div class="sim-controls-top">
         <div class="sim-player-info">
           <span class="player-dot p1"></span>
-          <span><strong>PLAYER (You):</strong> <span id="sim-p1-name">Custom Build</span></span>
+          <span><strong>PLAYER:</strong> <span id="sim-p1-name">Custom Build</span></span>
+        </div>
+
+        <div class="sim-config-group">
+          <div class="sim-select-wrapper">
+            <label for="opponent-select"><i class="fa-solid fa-robot"></i> Rival:</label>
+            <select id="opponent-select" class="custom-select">
+              <option value="viper">Viper Tail (Balanced)</option>
+              <option value="drake" selected>Drake Buster (S-Tier Attack)</option>
+              <option value="scythe">Scythe Rod (S-Tier Stamina)</option>
+              <option value="phoenix">Phoenix Shield (S-Tier Defense)</option>
+              <option value="wizard">Wizard Arrow (Precision Sniper)</option>
+            </select>
+          </div>
+          <div class="sim-select-wrapper">
+            <label for="launch-power-select"><i class="fa-solid fa-gauge-high"></i> Launch:</label>
+            <select id="launch-power-select" class="custom-select">
+              <option value="xdash">X-Extreme Dash (Power)</option>
+              <option value="balanced" selected>Balanced Launch</option>
+              <option value="stamina">Stamina Mode</option>
+            </select>
+          </div>
         </div>
 
         <button class="btn btn-glow" id="launch-battle-btn"><i class="fa-solid fa-play"></i> 3, 2, 1... LET IT RIP!</button>
 
         <div class="sim-player-info">
-          <span><strong>RIVAL CPU:</strong> Viper Tail 4-60 Taper</span>
-          <span class="player-dot p2"></span>
+          <span class="player-dot p2" id="sim-p2-dot"></span>
+          <span><strong>RIVAL:</strong> <span id="sim-p2-name">Drake Buster</span></span>
         </div>
       </div>
 
@@ -366,21 +387,27 @@
         <div class="stadium-overlay" id="stadium-start-overlay">
           <div class="overlay-text">
             <h3>ARENA READY</h3>
-            <p>Click "LET IT RIP!" to launch both tops into the Beystadium arena.</p>
+            <p>Select your rival and launch power, then click "LET IT RIP!"</p>
           </div>
+        </div>
+
+        <!-- Mid-Battle Interactive Special Action Buttons Overlay -->
+        <div class="battle-action-overlay hidden" id="battle-action-overlay">
+          <button class="btn btn-glow btn-sm" id="special-dash-btn"><i class="fa-solid fa-bolt"></i> X-EXTREME DASH!</button>
+          <button class="btn btn-outline btn-sm" id="special-brake-btn"><i class="fa-solid fa-shield-halved"></i> STABILIZE</button>
         </div>
       </div>
 
       <div class="sim-stats-live">
         <div class="live-hp">
-          <label>P1 Stamina</label>
+          <label>P1 Stamina <span id="p1-hp-text">100%</span></label>
           <div class="hp-track"><div class="hp-fill p1" id="p1-hp-bar" style="width: 100%"></div></div>
         </div>
         <div class="collision-log" id="sim-log-box">
-          Ready for battle initialization...
+          Ready for battle initialization... Choose rival and launch!
         </div>
         <div class="live-hp">
-          <label>CPU Stamina</label>
+          <label>CPU Stamina <span id="p2-hp-text">100%</span></label>
           <div class="hp-track"><div class="hp-fill p2" id="p2-hp-bar" style="width: 100%"></div></div>
         </div>
       </div>
