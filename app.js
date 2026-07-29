@@ -1001,6 +1001,17 @@ function updateAndDrawStadium() {
   simCtx.stroke();
   simCtx.setLineDash([]);
 
+  if (!battleActive && !isChargingLaunch) {
+    const time = Date.now() * 0.003;
+    p1State.x = cx + Math.cos(time) * 85;
+    p1State.y = cy + Math.sin(time) * 85;
+    p1State.color = state.primaryColor;
+
+    p2State.x = cx + Math.cos(time + Math.PI) * 85;
+    p2State.y = cy + Math.sin(time + Math.PI) * 85;
+    p2State.color = currentSelectedOpponent.color;
+  }
+
   if (battleActive) {
     // AI Behavior for P2 (Rival)
     const p2Ai = currentSelectedOpponent.ai;
