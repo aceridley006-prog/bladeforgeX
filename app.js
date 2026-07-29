@@ -1094,10 +1094,10 @@ function updateAndDrawStadium() {
       p.x += p.vx;
       p.y += p.vy;
 
-      // Friction & Stamina loss
-      p.vx *= 0.992;
-      p.vy *= 0.992;
-      p.hp -= (idx === 0 ? (0.04 * p1State.drain) : 0.045);
+      // Friction & Stamina loss (reduced drain for longer, more endurance-focused battles)
+      p.vx *= 0.994;
+      p.vy *= 0.994;
+      p.hp -= (idx === 0 ? (0.012 * p1State.drain) : 0.014);
 
       // Wall bounce & Over Finish check
       if (dist + p.radius > arenaRadius) {
@@ -1106,7 +1106,7 @@ function updateAndDrawStadium() {
         const dot = p.vx * nx + p.vy * ny;
         p.vx -= 1.8 * dot * nx;
         p.vy -= 1.8 * dot * ny;
-        p.hp -= 2.0;
+        p.hp -= 0.8;
 
         if (dist > arenaRadius + 10) {
           battleActive = false;
