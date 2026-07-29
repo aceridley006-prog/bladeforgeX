@@ -810,57 +810,244 @@ const opponentsList = {
     ai: 'balanced',
     attack: 75,
     defense: 65,
-    stamina: 70
+    stamina: 70,
+    powerMoveName: '🐍 Venom Fang Strike',
+    powerMove: (p, opp) => {
+      p.vx += 12; p.vy += 8; opp.hp -= 22;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🐍 VENOM BITE -22!', color: '#ef4444', life: 1.2 });
+    }
   },
   drake: {
     id: 'drake',
     name: 'Drake Buster 1-60 Flat',
     color: '#f97316',
     shape: 'aggressive-spikes',
-    bladesCount: 2,
+    bladesCount: 3,
     ai: 'aggressive',
     attack: 95,
     defense: 45,
-    stamina: 55
+    stamina: 55,
+    powerMoveName: '🔥 Dragon Smash Impact',
+    powerMove: (p, opp) => {
+      const angle = Math.atan2(opp.y - p.y, opp.x - p.x);
+      p.vx += Math.cos(angle) * 18; p.vy += Math.sin(angle) * 18; opp.hp -= 28;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🔥 DRAGON SMASH -28!', color: '#f97316', life: 1.2 });
+    }
   },
   scythe: {
     id: 'scythe',
     name: 'Scythe Rod 9-60 Ball',
     color: '#34d399',
-    shape: 'scythe-blade',
+    shape: 'smooth-curve',
     bladesCount: 4,
     ai: 'stamina',
     attack: 55,
     defense: 75,
-    stamina: 98
+    stamina: 98,
+    powerMoveName: '🌀 Cyclone Gyro Spin',
+    powerMove: (p, opp) => {
+      p.hp = Math.min(100, p.hp + 20); opp.hp -= 12;
+      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🌀 CYCLONE +20 HP!', color: '#34d399', life: 1.2 });
+    }
   },
   phoenix: {
     id: 'phoenix',
     name: 'Phoenix Shield 5-60 Hexa',
     color: '#a855f7',
-    shape: 'shield-round',
+    shape: 'heavy-armor',
     bladesCount: 6,
     ai: 'defender',
     attack: 60,
     defense: 98,
-    stamina: 70
+    stamina: 70,
+    powerMoveName: '🛡️ Phoenix Rebirth Wall',
+    powerMove: (p, opp) => {
+      p.hp = Math.min(100, p.hp + 25);
+      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🛡️ REBIRTH SHIELD +25!', color: '#a855f7', life: 1.2 });
+    }
   },
   wizard: {
     id: 'wizard',
     name: 'Wizard Arrow 3-80 Needle',
     color: '#06b6d4',
     shape: 'arrow-wings',
-    bladesCount: 3,
+    bladesCount: 4,
     ai: 'sniper',
     attack: 68,
     defense: 72,
-    stamina: 85
+    stamina: 85,
+    powerMoveName: '🏹 Mystic Aero Pierce',
+    powerMove: (p, opp) => {
+      opp.vx *= 0.1; opp.vy *= 0.1; opp.hp -= 24;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🏹 AERO PIERCE -24!', color: '#06b6d4', life: 1.2 });
+    }
+  },
+  shark: {
+    id: 'shark',
+    name: 'Shark Edge 3-60 Rush',
+    color: '#38bdf8',
+    shape: 'shark-fin',
+    bladesCount: 3,
+    ai: 'aggressive',
+    attack: 94,
+    defense: 42,
+    stamina: 52,
+    powerMoveName: '🦈 Megalodon Uppercut',
+    powerMove: (p, opp) => {
+      opp.vy -= 16; opp.hp -= 26;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦈 UPPERCUT -26!', color: '#38bdf8', life: 1.2 });
+    }
+  },
+  hell: {
+    id: 'hell',
+    name: 'Hell Hammer 1-60 Metal Flat',
+    color: '#dc2626',
+    shape: 'heavy-hammer',
+    bladesCount: 2,
+    ai: 'aggressive',
+    attack: 99,
+    defense: 35,
+    stamina: 48,
+    powerMoveName: '🔨 Infernal Judgment',
+    powerMove: (p, opp) => {
+      opp.hp -= 32;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🔨 JUDGMENT -32!', color: '#dc2626', life: 1.2 });
+    }
+  },
+  valiant: {
+    id: 'valiant',
+    name: 'Valiant Goliath 5-60 Taper',
+    color: '#eab308',
+    shape: 'goliath-shield',
+    bladesCount: 5,
+    ai: 'balanced',
+    attack: 82,
+    defense: 72,
+    stamina: 74,
+    powerMoveName: '⚡ Titan Shockwave',
+    powerMove: (p, opp) => {
+      opp.vx += (Math.random() - 0.5) * 20; opp.vy += (Math.random() - 0.5) * 20; opp.hp -= 25;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⚡ SHOCKWAVE -25!', color: '#eab308', life: 1.2 });
+    }
+  },
+  cobalt: {
+    id: 'cobalt',
+    name: 'Cobalt Dragoon 9-60 Gear Needle',
+    color: '#2563eb',
+    shape: 'dragon-claws',
+    bladesCount: 3,
+    ai: 'aggressive',
+    attack: 92,
+    defense: 48,
+    stamina: 62,
+    powerMoveName: '🐉 Imperial Dragon Claw',
+    powerMove: (p, opp) => {
+      opp.hp -= 29; p.vx += 10;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🐉 DRAGON CLAW -29!', color: '#2563eb', life: 1.2 });
+    }
+  },
+  leon: {
+    id: 'leon',
+    name: 'Leon Crest 5-60 Wedge',
+    color: '#ca8a04',
+    shape: 'crest-shield',
+    bladesCount: 4,
+    ai: 'defender',
+    attack: 62,
+    defense: 94,
+    stamina: 72,
+    powerMoveName: '🦁 Royal Roar Defense',
+    powerMove: (p, opp) => {
+      p.hp += 22; opp.vx *= 0.2; opp.vy *= 0.2;
+      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🦁 ROYAL ROAR +22!', color: '#ca8a04', life: 1.2 });
+    }
+  },
+  unicorn: {
+    id: 'unicorn',
+    name: 'Unicorn Sting 4-60 Point',
+    color: '#f43f5e',
+    shape: 'horn-edge',
+    bladesCount: 5,
+    ai: 'sniper',
+    attack: 80,
+    defense: 65,
+    stamina: 78,
+    powerMoveName: '🦄 Horn Spear Pierce',
+    powerMove: (p, opp) => {
+      opp.hp -= 26;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦄 HORN SPEAR -26!', color: '#f43f5e', life: 1.2 });
+    }
+  },
+  pegasus: {
+    id: 'pegasus',
+    name: 'Pegasus Dash 3-60 Glide',
+    color: '#60a5fa',
+    shape: 'star-wings',
+    bladesCount: 5,
+    ai: 'balanced',
+    attack: 76,
+    defense: 66,
+    stamina: 78,
+    powerMoveName: '🕊️ Star-Wing Gale',
+    powerMove: (p, opp) => {
+      p.vx += 14; p.vy += 14; opp.hp -= 24;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🕊️ GALE DASH -24!', color: '#60a5fa', life: 1.2 });
+    }
+  },
+  tyranno: {
+    id: 'tyranno',
+    name: 'Tyranno Beat 1-80 Quake',
+    color: '#78350f',
+    shape: 'aggressive-spikes',
+    bladesCount: 3,
+    ai: 'aggressive',
+    attack: 96,
+    defense: 40,
+    stamina: 50,
+    powerMoveName: '🦖 Apex Earthquake',
+    powerMove: (p, opp) => {
+      opp.vx += (Math.random() - 0.5) * 25; opp.vy += (Math.random() - 0.5) * 25; opp.hp -= 30;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦖 EARTHQUAKE -30!', color: '#78350f', life: 1.2 });
+    }
+  },
+  hels: {
+    id: 'hels',
+    name: 'Hells Chain 9-80 Elevate',
+    color: '#9333ea',
+    shape: 'smooth-curve',
+    bladesCount: 4,
+    ai: 'stamina',
+    attack: 65,
+    defense: 72,
+    stamina: 88,
+    powerMoveName: '⛓️ Chain Reaction Vortex',
+    powerMove: (p, opp) => {
+      opp.hp -= 22; p.hp += 18;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⛓️ VORTEX -22!', color: '#9333ea', life: 1.2 });
+    }
+  },
+  samurai: {
+    id: 'samurai',
+    name: 'Samurai Saber 7-60 Metal Flat',
+    color: '#0f172a',
+    shape: 'arrow-wings',
+    bladesCount: 4,
+    ai: 'aggressive',
+    attack: 94,
+    defense: 50,
+    stamina: 60,
+    powerMoveName: '⚔️ Blade Master Slash',
+    powerMove: (p, opp) => {
+      opp.hp -= 31;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⚔️ SABER SLASH -31!', color: '#0f172a', life: 1.2 });
+    }
   }
 };
 
 let currentSelectedOpponent = opponentsList.drake;
 let specialDashAvailable = true;
 let specialBrakeAvailable = true;
+let specialPowerMoveAvailable = true;
 
 let chargingPower = 50;
 let isChargingLaunch = false;
@@ -938,7 +1125,7 @@ function initStadiumSimulator() {
     simFloatingTexts.push({ x: p1State.x, y: p1State.y - 20, text: '🎯 BOOST!', color: '#facc15', life: 0.8 });
   });
 
-  // Mouse / Touch Dragging controls restricted inside arena perimeter
+  // Mouse / Touch Dragging controls restricted inside larger arena perimeter
   simCanvas.addEventListener('mousedown', (e) => {
     isDraggingP1 = true;
   });
@@ -949,7 +1136,7 @@ function initStadiumSimulator() {
     const my = e.clientY - rect.top;
     const cx = simCanvas.width / 2;
     const cy = simCanvas.height / 2;
-    const arenaRadius = 180;
+    const arenaRadius = 230; // Increased arena radius for larger arena
 
     const dx = mx - cx;
     const dy = my - cy;
@@ -1015,12 +1202,33 @@ function initStadiumSimulator() {
     });
   }
 
-  function renderSimLoop() {
-    updateAndDrawStadium();
-    requestAnimationFrame(renderSimLoop);
+  const powerMoveBtn = document.getElementById('power-move-btn');
+  if (powerMoveBtn) {
+    powerMoveBtn.addEventListener('click', () => {
+      if (!battleActive || !specialPowerMoveAvailable) return;
+      specialPowerMoveAvailable = false;
+      powerMoveBtn.classList.add('disabled');
+
+      // Trigger the unique power move corresponding to the selected opponent!
+      if (currentSelectedOpponent.powerMove) {
+        currentSelectedOpponent.powerMove(p1State, p2State);
+      }
+
+      const logBox = document.getElementById('sim-log-box');
+      if (logBox) logBox.innerText = `🔥 SIGNATURE POWER MOVE EXECUTED: ${currentSelectedOpponent.powerMoveName}!`;
+
+      for (let i = 0; i < 25; i++) {
+        simSparks.push({
+          x: p1State.x,
+          y: p1State.y,
+          vx: (Math.random() - 0.5) * 20,
+          vy: (Math.random() - 0.5) * 20,
+          life: 1.5,
+          color: currentSelectedOpponent.color
+        });
+      }
+    });
   }
-  renderSimLoop();
-}
 
 function startLaunchChargingPhase() {
   const welcomeBox = document.getElementById('overlay-welcome-box');
@@ -1076,10 +1284,18 @@ function executeLaunch() {
 
   specialDashAvailable = true;
   specialBrakeAvailable = true;
+  specialPowerMoveAvailable = true;
   const dashBtn = document.getElementById('special-dash-btn');
   const brakeBtn = document.getElementById('special-brake-btn');
+  const powerMoveBtn = document.getElementById('power-move-btn');
+  const powerMoveNameBtn = document.getElementById('power-move-name-btn');
+
   if (dashBtn) dashBtn.classList.remove('disabled');
   if (brakeBtn) brakeBtn.classList.remove('disabled');
+  if (powerMoveBtn) {
+    powerMoveBtn.classList.remove('disabled');
+    if (powerMoveNameBtn) powerMoveNameBtn.innerText = currentSelectedOpponent.powerMoveName;
+  }
 
   let launchSpeed = 6.0;
   let launchBonusMsg = 'Balanced Launch!';
@@ -1135,7 +1351,7 @@ function updateAndDrawStadium() {
   const height = simCanvas.height;
   const cx = width / 2;
   const cy = height / 2;
-  const arenaRadius = 180;
+  const arenaRadius = 230; // Larger Beystadium arena radius (increased from 180 to 230)
 
   simCtx.clearRect(0, 0, width, height);
 
@@ -1154,7 +1370,7 @@ function updateAndDrawStadium() {
 
   // Draw X-Celerator Rail Outer Ring
   simCtx.beginPath();
-  simCtx.arc(cx, cy, arenaRadius - 15, 0, Math.PI * 2);
+  simCtx.arc(cx, cy, arenaRadius - 18, 0, Math.PI * 2);
   simCtx.strokeStyle = 'rgba(250, 204, 21, 0.4)';
   simCtx.lineWidth = 3;
   simCtx.setLineDash([12, 8]);
@@ -1163,12 +1379,12 @@ function updateAndDrawStadium() {
 
   if (!battleActive && !isChargingLaunch) {
     const time = Date.now() * 0.003;
-    p1State.x = cx + Math.cos(time) * 85;
-    p1State.y = cy + Math.sin(time) * 85;
+    p1State.x = cx + Math.cos(time) * 110;
+    p1State.y = cy + Math.sin(time) * 110;
     p1State.color = state.primaryColor;
 
-    p2State.x = cx + Math.cos(time + Math.PI) * 85;
-    p2State.y = cy + Math.sin(time + Math.PI) * 85;
+    p2State.x = cx + Math.cos(time + Math.PI) * 110;
+    p2State.y = cy + Math.sin(time + Math.PI) * 110;
     p2State.color = currentSelectedOpponent.color;
   }
 

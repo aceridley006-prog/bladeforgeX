@@ -364,13 +364,23 @@
 
         <div class="sim-config-group">
           <div class="sim-select-wrapper">
-            <label for="opponent-select"><i class="fa-solid fa-robot"></i> Rival:</label>
+            <label for="opponent-select"><i class="fa-solid fa-robot"></i> Rival (15 Unique Champions):</label>
             <select id="opponent-select" class="custom-select">
-              <option value="viper">Viper Tail (Balanced)</option>
-              <option value="drake" selected>Drake Buster (S-Tier Attack)</option>
-              <option value="scythe">Scythe Rod (S-Tier Stamina)</option>
-              <option value="phoenix">Phoenix Shield (S-Tier Defense)</option>
-              <option value="wizard">Wizard Arrow (Precision Sniper)</option>
+              <option value="viper">Viper Tail 4-60 Taper (Balanced)</option>
+              <option value="drake" selected>Drake Buster 1-60 Flat (S-Tier Attack)</option>
+              <option value="scythe">Scythe Rod 9-60 Ball (S-Tier Stamina)</option>
+              <option value="phoenix">Phoenix Shield 5-60 Hexa (S-Tier Defense)</option>
+              <option value="wizard">Wizard Arrow 3-80 Needle (Precision Sniper)</option>
+              <option value="shark">Shark Edge 3-60 Rush (Upper-Cut Smash)</option>
+              <option value="hell">Hell Hammer 1-60 Metal Flat (Brutal Bludgeon)</option>
+              <option value="valiant">Valiant Goliath 5-60 Taper (Titanium Balance)</option>
+              <option value="cobalt">Cobalt Dragoon 9-60 Gear Needle (Left-Spin Dragon)</option>
+              <option value="leon">Leon Crest 5-60 Wedge (Crest Fortress)</option>
+              <option value="unicorn">Unicorn Sting 4-60 Point (Piercing Spear)</option>
+              <option value="pegasus">Pegasus Dash 3-60 Glide (Winged Gale)</option>
+              <option value="tyranno">Tyranno Beat 1-80 Quake (Earth-Shaker)</option>
+              <option value="hels">Hells Chain 9-80 Elevate (Chain Reaction)</option>
+              <option value="samurai">Samurai Saber 7-60 Metal Flat (Blade Master)</option>
             </select>
           </div>
           <div class="sim-select-wrapper">
@@ -387,7 +397,7 @@
       </div>
 
       <div class="stadium-canvas-container">
-        <canvas id="stadium-canvas" width="700" height="420"></canvas>
+        <canvas id="stadium-canvas" width="860" height="520"></canvas>
         
         <div class="stadium-overlay" id="stadium-start-overlay">
           <div class="overlay-text" id="overlay-welcome-box">
@@ -408,10 +418,11 @@
           </div>
         </div>
 
-        <!-- Mid-Battle Interactive Special Action Buttons Overlay -->
+        <!-- Mid-Battle Interactive Special Action Buttons Overlay (15 Unique Power Moves) -->
         <div class="battle-action-overlay hidden" id="battle-action-overlay">
-          <button class="btn btn-glow btn-sm" id="special-dash-btn"><i class="fa-solid fa-bolt"></i> X-EXTREME DASH!</button>
+          <button class="btn btn-glow btn-sm" id="special-dash-btn"><i class="fa-solid fa-bolt"></i> X-EXTREME DASH</button>
           <button class="btn btn-outline btn-sm" id="special-brake-btn"><i class="fa-solid fa-shield-halved"></i> STABILIZE</button>
+          <button class="btn btn-glow btn-sm" id="power-move-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fa-solid fa-fire-flame-curved"></i> <span id="power-move-name-btn">SIGNATURE MOVE</span></button>
         </div>
       </div>
 
