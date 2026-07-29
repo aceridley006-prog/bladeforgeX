@@ -804,7 +804,7 @@ const opponentsList = {
   viper: {
     id: 'viper',
     name: 'Viper Tail 4-60 Taper',
-    color: '#ef4444',
+    color: '#10b981',
     shape: 'viper-fangs',
     bladesCount: 3,
     ai: 'balanced',
@@ -813,8 +813,9 @@ const opponentsList = {
     stamina: 70,
     powerMoveName: '🐍 Venom Fang Strike',
     powerMove: (p, opp) => {
-      p.vx += 12; p.vy += 8; opp.hp -= 22;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🐍 VENOM BITE -22!', color: '#ef4444', life: 1.2 });
+      p.vx += 14; p.vy += 8; opp.hp -= 22;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🐍 VENOM BITE -22!', color: '#10b981', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*18, vy: (Math.random()-0.5)*18, life: 1.4, color: '#10b981' });
     }
   },
   drake: {
@@ -830,8 +831,9 @@ const opponentsList = {
     powerMoveName: '🔥 Dragon Smash Impact',
     powerMove: (p, opp) => {
       const angle = Math.atan2(opp.y - p.y, opp.x - p.x);
-      p.vx += Math.cos(angle) * 18; p.vy += Math.sin(angle) * 18; opp.hp -= 28;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🔥 DRAGON SMASH -28!', color: '#f97316', life: 1.2 });
+      p.vx += Math.cos(angle) * 20; p.vy += Math.sin(angle) * 20; opp.hp -= 28;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🔥 DRAGON SMASH -28!', color: '#f97316', life: 1.4 });
+      for(let i=0; i<35; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*22, vy: (Math.random()-0.5)*22, life: 1.4, color: '#f97316' });
     }
   },
   scythe: {
@@ -846,8 +848,9 @@ const opponentsList = {
     stamina: 98,
     powerMoveName: '🌀 Cyclone Gyro Spin',
     powerMove: (p, opp) => {
-      p.hp = Math.min(100, p.hp + 20); opp.hp -= 12;
-      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🌀 CYCLONE +20 HP!', color: '#34d399', life: 1.2 });
+      p.hp = Math.min(100, p.hp + 22); opp.hp -= 14;
+      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🌀 CYCLONE +22 HP!', color: '#34d399', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: p.x, y: p.y, vx: Math.cos(i)*12, vy: Math.sin(i)*12, life: 1.4, color: '#34d399' });
     }
   },
   phoenix: {
@@ -862,8 +865,9 @@ const opponentsList = {
     stamina: 70,
     powerMoveName: '🛡️ Phoenix Rebirth Wall',
     powerMove: (p, opp) => {
-      p.hp = Math.min(100, p.hp + 25);
-      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🛡️ REBIRTH SHIELD +25!', color: '#a855f7', life: 1.2 });
+      p.hp = Math.min(100, p.hp + 28);
+      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🛡️ REBIRTH SHIELD +28!', color: '#a855f7', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: p.x, y: p.y, vx: (Math.random()-0.5)*15, vy: (Math.random()-0.5)*15, life: 1.4, color: '#a855f7' });
     }
   },
   wizard: {
@@ -878,8 +882,9 @@ const opponentsList = {
     stamina: 85,
     powerMoveName: '🏹 Mystic Aero Pierce',
     powerMove: (p, opp) => {
-      opp.vx *= 0.1; opp.vy *= 0.1; opp.hp -= 24;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🏹 AERO PIERCE -24!', color: '#06b6d4', life: 1.2 });
+      opp.vx *= 0.05; opp.vy *= 0.05; opp.hp -= 24;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🏹 AERO PIERCE -24!', color: '#06b6d4', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*20, vy: (Math.random()-0.5)*20, life: 1.4, color: '#06b6d4' });
     }
   },
   shark: {
@@ -894,8 +899,9 @@ const opponentsList = {
     stamina: 52,
     powerMoveName: '🦈 Megalodon Uppercut',
     powerMove: (p, opp) => {
-      opp.vy -= 16; opp.hp -= 26;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦈 UPPERCUT -26!', color: '#38bdf8', life: 1.2 });
+      opp.vy -= 18; opp.hp -= 26;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦈 UPPERCUT -26!', color: '#38bdf8', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*18, vy: -Math.abs(Math.random()*20), life: 1.4, color: '#38bdf8' });
     }
   },
   hell: {
@@ -910,8 +916,9 @@ const opponentsList = {
     stamina: 48,
     powerMoveName: '🔨 Infernal Judgment',
     powerMove: (p, opp) => {
-      opp.hp -= 32;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🔨 JUDGMENT -32!', color: '#dc2626', life: 1.2 });
+      opp.hp -= 34;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🔨 JUDGMENT -34!', color: '#dc2626', life: 1.4 });
+      for(let i=0; i<35; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*25, vy: (Math.random()-0.5)*25, life: 1.4, color: '#dc2626' });
     }
   },
   valiant: {
@@ -926,8 +933,9 @@ const opponentsList = {
     stamina: 74,
     powerMoveName: '⚡ Titan Shockwave',
     powerMove: (p, opp) => {
-      opp.vx += (Math.random() - 0.5) * 20; opp.vy += (Math.random() - 0.5) * 20; opp.hp -= 25;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⚡ SHOCKWAVE -25!', color: '#eab308', life: 1.2 });
+      opp.vx += (Math.random() - 0.5) * 22; opp.vy += (Math.random() - 0.5) * 22; opp.hp -= 25;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⚡ SHOCKWAVE -25!', color: '#eab308', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: p.x, y: p.y, vx: (Math.random()-0.5)*22, vy: (Math.random()-0.5)*22, life: 1.4, color: '#eab308' });
     }
   },
   cobalt: {
@@ -942,8 +950,9 @@ const opponentsList = {
     stamina: 62,
     powerMoveName: '🐉 Imperial Dragon Claw',
     powerMove: (p, opp) => {
-      opp.hp -= 29; p.vx += 10;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🐉 DRAGON CLAW -29!', color: '#2563eb', life: 1.2 });
+      opp.hp -= 30; p.vx += 12;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🐉 DRAGON CLAW -30!', color: '#2563eb', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*20, vy: (Math.random()-0.5)*20, life: 1.4, color: '#2563eb' });
     }
   },
   leon: {
@@ -958,8 +967,9 @@ const opponentsList = {
     stamina: 72,
     powerMoveName: '🦁 Royal Roar Defense',
     powerMove: (p, opp) => {
-      p.hp += 22; opp.vx *= 0.2; opp.vy *= 0.2;
-      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🦁 ROYAL ROAR +22!', color: '#ca8a04', life: 1.2 });
+      p.hp += 24; opp.vx *= 0.15; opp.vy *= 0.15;
+      simFloatingTexts.push({ x: p.x, y: p.y - 30, text: '🦁 ROYAL ROAR +24!', color: '#ca8a04', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: p.x, y: p.y, vx: (Math.random()-0.5)*15, vy: (Math.random()-0.5)*15, life: 1.4, color: '#ca8a04' });
     }
   },
   unicorn: {
@@ -974,8 +984,9 @@ const opponentsList = {
     stamina: 78,
     powerMoveName: '🦄 Horn Spear Pierce',
     powerMove: (p, opp) => {
-      opp.hp -= 26;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦄 HORN SPEAR -26!', color: '#f43f5e', life: 1.2 });
+      opp.hp -= 27;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦄 HORN SPEAR -27!', color: '#f43f5e', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*18, vy: (Math.random()-0.5)*18, life: 1.4, color: '#f43f5e' });
     }
   },
   pegasus: {
@@ -990,8 +1001,9 @@ const opponentsList = {
     stamina: 78,
     powerMoveName: '🕊️ Star-Wing Gale',
     powerMove: (p, opp) => {
-      p.vx += 14; p.vy += 14; opp.hp -= 24;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🕊️ GALE DASH -24!', color: '#60a5fa', life: 1.2 });
+      p.vx += 16; p.vy += 16; opp.hp -= 25;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🕊️ GALE DASH -25!', color: '#60a5fa', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: p.x, y: p.y, vx: (Math.random()-0.5)*20, vy: (Math.random()-0.5)*20, life: 1.4, color: '#60a5fa' });
     }
   },
   tyranno: {
@@ -1006,8 +1018,9 @@ const opponentsList = {
     stamina: 50,
     powerMoveName: '🦖 Apex Earthquake',
     powerMove: (p, opp) => {
-      opp.vx += (Math.random() - 0.5) * 25; opp.vy += (Math.random() - 0.5) * 25; opp.hp -= 30;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦖 EARTHQUAKE -30!', color: '#78350f', life: 1.2 });
+      opp.vx += (Math.random() - 0.5) * 28; opp.vy += (Math.random() - 0.5) * 28; opp.hp -= 32;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '🦖 EARTHQUAKE -32!', color: '#78350f', life: 1.4 });
+      for(let i=0; i<35; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*25, vy: (Math.random()-0.5)*25, life: 1.4, color: '#78350f' });
     }
   },
   hels: {
@@ -1022,8 +1035,9 @@ const opponentsList = {
     stamina: 88,
     powerMoveName: '⛓️ Chain Reaction Vortex',
     powerMove: (p, opp) => {
-      opp.hp -= 22; p.hp += 18;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⛓️ VORTEX -22!', color: '#9333ea', life: 1.2 });
+      opp.hp -= 24; p.hp += 20;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⛓️ VORTEX -24!', color: '#9333ea', life: 1.4 });
+      for(let i=0; i<30; i++) simSparks.push({ x: p.x, y: p.y, vx: Math.cos(i)*15, vy: Math.sin(i)*15, life: 1.4, color: '#9333ea' });
     }
   },
   samurai: {
@@ -1038,8 +1052,9 @@ const opponentsList = {
     stamina: 60,
     powerMoveName: '⚔️ Blade Master Slash',
     powerMove: (p, opp) => {
-      opp.hp -= 31;
-      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⚔️ SABER SLASH -31!', color: '#0f172a', life: 1.2 });
+      opp.hp -= 33;
+      simFloatingTexts.push({ x: opp.x, y: opp.y - 30, text: '⚔️ SABER SLASH -33!', color: '#0f172a', life: 1.4 });
+      for(let i=0; i<35; i++) simSparks.push({ x: opp.x, y: opp.y, vx: (Math.random()-0.5)*22, vy: (Math.random()-0.5)*22, life: 1.4, color: '#0f172a' });
     }
   }
 };
@@ -1403,18 +1418,28 @@ function updateAndDrawStadium() {
     if (keysPressed['ArrowLeft'] || keysPressed['KeyA']) p1State.vx -= steerPower;
     if (keysPressed['ArrowRight'] || keysPressed['KeyD']) p1State.vx += steerPower;
 
-    // AI Behavior for P2 (Rival)
+    // AI Behavior for P2 (Rival) matching player pace and movement
     const p2Ai = currentSelectedOpponent.ai;
-    let aiPull = 0.12;
+    let aiPull = 0.08;
+    const p1Speed = Math.hypot(p1State.vx, p1State.vy);
+    const cpuMaxSpeed = Math.min(6.5, Math.max(3.0, p1Speed * 0.9));
+
     if (p2Ai === 'aggressive') {
       const angToP1 = Math.atan2(p1State.y - p2State.y, p1State.x - p2State.x);
-      p2State.vx += Math.cos(angToP1) * 0.18;
-      p2State.vy += Math.sin(angToP1) * 0.18;
+      p2State.vx += Math.cos(angToP1) * 0.14;
+      p2State.vy += Math.sin(angToP1) * 0.14;
     } else if (p2Ai === 'stamina') {
-      p2State.vx -= 0.04;
-      p2State.vy -= 0.04;
+      p2State.vx -= 0.03;
+      p2State.vy -= 0.03;
     } else if (p2Ai === 'defender') {
-      aiPull = 0.22;
+      aiPull = 0.16;
+    }
+
+    // Clamp CPU speed to match player pace for balanced duels
+    const cpuSpeed = Math.hypot(p2State.vx, p2State.vy);
+    if (cpuSpeed > cpuMaxSpeed) {
+      p2State.vx = (p2State.vx / cpuSpeed) * cpuMaxSpeed;
+      p2State.vy = (p2State.vy / cpuSpeed) * cpuMaxSpeed;
     }
 
     // Physics Update: Gravity pull towards center crater - much slower stamina drain for long endurance battles
@@ -1484,22 +1509,30 @@ function updateAndDrawStadium() {
       p2State.vx += ax;
       p2State.vy += ay;
 
-      const p1Attack = state.currentBlade.attack || 75;
-      const p2Attack = currentSelectedOpponent.attack || 70;
-      const damageP1 = (p2Attack / 55) * 3.5;
-      const damageP2 = (p1Attack / 55) * 3.5;
+      const p1Attack = (state.currentBlade.attack || 75) + (state.currentRatchet.attack || 10) + (state.currentBit.attack || 10);
+      const p1Defense = (state.currentBlade.defense || 70) + (state.currentRatchet.defense || 10) + (state.currentBit.defense || 10);
+      const p1Weight = (state.currentBlade.weight || 35) + (state.currentRatchet.weight || 6) + (state.currentBit.weight || 2);
 
-      p1State.hp -= damageP1;
-      p2State.hp -= damageP2;
+      const p2Attack = currentSelectedOpponent.attack || 75;
+      const p2Defense = 70;
+
+      const damageToP2 = Math.max(2, Math.round(((p1Attack * 0.5 + p1Weight * 0.4) / (p2Defense + 40)) * 4.5 * 10) / 10);
+      const damageToP1 = Math.max(2, Math.round(((p2Attack * 0.5) / (p1Defense + 40)) * 4.5 * 10) / 10);
+
+      p1State.hp -= damageToP1;
+      p2State.hp -= damageToP2;
+
+      simFloatingTexts.push({ x: p1State.x, y: p1State.y - 25, text: `-${damageToP1}`, color: '#ef4444', life: 1.0 });
+      simFloatingTexts.push({ x: p2State.x, y: p2State.y - 25, text: `-${damageToP2}`, color: '#3b82f6', life: 1.0 });
 
       const sparkX = (p1State.x + p2State.x) / 2;
       const sparkY = (p1State.y + p2State.y) / 2;
-      for (let i = 0; i < 14; i++) {
+      for (let i = 0; i < 16; i++) {
         simSparks.push({
           x: sparkX,
           y: sparkY,
-          vx: (Math.random() - 0.5) * 14,
-          vy: (Math.random() - 0.5) * 14,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.5) * 16,
           life: 1.0,
           color: Math.random() > 0.5 ? '#facc15' : '#38bdf8'
         });
@@ -1508,7 +1541,7 @@ function updateAndDrawStadium() {
       const logBox = document.getElementById('sim-log-box');
       if (logBox) {
         const impactForce = Math.round(Math.abs(p1State.vx) + Math.abs(p2State.vx) * 10);
-        logBox.innerText = `💥 EXTREME CLASH! X-Rail Impact Force: ${impactForce}!`;
+        logBox.innerText = `💥 CLASH! Your Build (-${damageToP1} HP) vs Rival (-${damageToP2} HP)! Impact: ${impactForce}`;
       }
     }
 
