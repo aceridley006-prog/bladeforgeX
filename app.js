@@ -804,14 +804,8 @@ function initStadiumSimulator() {
   const lockPowerBtn = document.getElementById('release-launch-btn');
   if (lockPowerBtn) {
     lockPowerBtn.addEventListener('click', () => {
-      const powerContainer = document.getElementById('launch-power-container');
-      const welcomeBox = document.getElementById('overlay-welcome-box');
-      if (powerContainer) powerContainer.classList.add('hidden');
-      if (welcomeBox) {
-        welcomeBox.classList.remove('hidden');
-        welcomeBox.querySelector('h3').innerText = 'POWER LOCKED!';
-        welcomeBox.querySelector('p').innerHTML = `Launch Power set to <strong>${Math.round(chargingPower)}%</strong>!<br>Now click <strong>"2. LET IT RIP!"</strong> to start the match.`;
-      }
+      // Immediately execute launch and remove the overlay completely when power is locked or let it rip is pressed
+      executeLaunch();
     });
   }
 
