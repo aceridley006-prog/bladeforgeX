@@ -778,6 +778,11 @@ let currentSelectedOpponent = opponentsList.drake;
 let specialDashAvailable = true;
 let specialBrakeAvailable = true;
 
+let chargingPower = 50;
+let isChargingLaunch = false;
+let chargeInterval = null;
+let simFloatingTexts = [];
+
 function initStadiumSimulator() {
   simCanvas = document.getElementById('stadium-canvas');
   if (!simCanvas) return;
@@ -785,7 +790,12 @@ function initStadiumSimulator() {
 
   const launchBtn = document.getElementById('launch-battle-btn');
   if (launchBtn) {
-    launchBtn.addEventListener('click', startBattle);
+    launchBtn.addEventListener('click', startLaunchChargingPhase);
+  }
+
+  const releaseBtn = document.getElementById('release-launch-btn');
+  if (releaseBtn) {
+    releaseBtn.addEventListener('click', executeLaunch);
   }
 
   const opponentSelect = document.getElementById('opponent-select');
@@ -812,17 +822,17 @@ function initStadiumSimulator() {
       if (!battleActive || !specialDashAvailable) return;
       specialDashAvailable = false;
       dashBtn.classList.add('disabled');
-      // Give P1 a massive velocity burst towards P2
       const angle = Math.atan2(p2State.y - p1State.y, p2State.x - p1State.x);
-      p1State.vx += Math.cos(angle) * 14;
-      p1State.vy += Math.sin(angle) * 14;
-      p2State.hp -= 15;
+      p1State.vx += Math.cos(angle) * 15;
+      p1State.vy += Math.sin(angle) * 15;
+      p2State.hp -= 18;
+
+      simFloatingTexts.push({ x: p2State.x, y: p2State.y - 25, text: '-18 DMG!', color: '#3b82f6', life: 1.0 });
       
       const logBox = document.getElementById('sim-log-box');
-      if (logBox) logBox.innerText = '⚡ X-EXTREME DASH UNLEASHED! Massive direct impact on rival!';
+      if (logBox) logBox.innerText = '⚡ X-EXTREME DASH UNLEASHED! Direct impact on rival!';
       
-      // Spawn sparks
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 18; i++) {
         simSparks.push({
           x: p1State.x,
           y: p1State.y,
@@ -841,12 +851,14 @@ function initStadiumSimulator() {
       if (!battleActive || !specialBrakeAvailable) return;
       specialBrakeAvailable = false;
       brakeBtn.classList.add('disabled');
-      p1State.hp = Math.min(100, p1State.hp + 12);
-      p1State.vx *= 0.2;
-      p1State.vy *= 0.2;
+      p1State.hp = Math.min(100, p1State.hp + 15);
+      p1State.vx *= 0.1;
+      p1State.vy *= 0.1;
+
+      simFloatingTexts.push({ x: p1State.x, y: p1State.y - 25, text: '+15 HP STABILIZED', color: '#10b981', life: 1.0 });
 
       const logBox = document.getElementById('sim-log-box');
-      if (logBox) logBox.innerText = '🛡️ STABILIZE ACTIVATED! Burst teeth locked, stamina restored!';
+      if (logBox) logBox.innerText = '🛡️ STABILIZE ACTIVATED! Burst teeth locked, stamina recovered!';
     });
   }
 
@@ -857,9 +869,47 @@ function initStadiumSimulator() {
   renderSimLoop();
 }
 
-function startBattle() {
+function startLaunchChargingPhase() {
+  const welcomeBox = document.getElementById('overlay-welcome-box');
+  const powerContainer = document.getElementById('launch-power-container');
+  if (welcomeBox) welcomeBox.classList.add('hidden');
+  if (powerContainer) powerContainer.classList.remove('hidden');
+
+  isChargingLaunch = true;
+  chargingPower = 20;
+  let direction = 1;
+
+  if (chargeInterval) clearInterval(chargeInterval);
+  chargeInterval = setInterval(() => {
+    if (!isChargingLaunch) return;
+    chargingPower += direction * 3.5;
+    if (chargingPower >= 100) {
+      chargingPower = 100;
+      direction = -1;
+    } else if (chargingPower <= 15) {
+      chargingPower = 15;
+      direction = 1;
+    }
+
+    const fillEl = document.getElementById('power-meter-fill');
+    const valEl = document.getElementById('power-val-num');
+    if (fillEl) fillEl.style.width = `${chargingPower}%`;
+    if (valEl) valEl.innerText = Math.round(chargingPower);
+  }, 30);
+}
+
+function executeLaunch() {
+  if (!isChargingLaunch) return;
+  isChargingLaunch = false;
+  if (chargeInterval) clearInterval(chargeInterval);
+
   const overlay = document.getElementById('stadium-start-overlay');
   if (overlay) overlay.classList.add('hidden');
+
+  const welcomeBox = document.getElementById('overlay-welcome-box');
+  const powerContainer = document.getElementById('launch-power-container');
+  if (welcomeBox) welcomeBox.classList.remove('hidden');
+  if (powerContainer) powerContainer.classList.add('hidden');
 
   const actionOverlay = document.getElementById('battle-action-overlay');
   if (actionOverlay) actionOverlay.classList.remove('hidden');
@@ -871,32 +921,31 @@ function startBattle() {
   if (dashBtn) dashBtn.classList.remove('disabled');
   if (brakeBtn) brakeBtn.classList.remove('disabled');
 
-  const launchPowerSelect = document.getElementById('launch-power-select');
-  let launchSpeed = 5;
-  let staminaDrainMultiplier = 1.0;
-  if (launchPowerSelect) {
-    if (launchPowerSelect.value === 'xdash') {
-      launchSpeed = 8;
-      staminaDrainMultiplier = 1.3;
-    } else if (launchPowerSelect.value === 'stamina') {
-      launchSpeed = 3;
-      staminaDrainMultiplier = 0.6;
-    }
+  let launchSpeed = 5.0;
+  let launchBonusMsg = 'Balanced Launch!';
+  if (chargingPower >= 75 && chargingPower <= 95) {
+    launchSpeed = 8.5;
+    launchBonusMsg = '⚡ X-EXTREME SUPER LAUNCH! Perfect Sweet Spot!';
+  } else if (chargingPower < 50) {
+    launchSpeed = 3.8;
+    launchBonusMsg = 'Weak Launch...';
+  } else {
+    launchSpeed = 6.5;
+    launchBonusMsg = 'Strong Power Launch!';
   }
 
   const cx = simCanvas.width / 2;
   const cy = simCanvas.height / 2;
 
-  // Reset Tops with Launch parameters
   p1State = {
     x: cx - 160,
     y: cy,
     vx: launchSpeed,
     vy: -launchSpeed * 0.7,
-    hp: 100,
+    hp: chargingPower >= 75 && chargingPower <= 95 ? 105 : 100,
     radius: 30,
     color: state.primaryColor,
-    drain: staminaDrainMultiplier
+    drain: 1.0
   };
 
   p2State = {
@@ -913,7 +962,11 @@ function startBattle() {
   battleActive = true;
 
   const logBox = document.getElementById('sim-log-box');
-  if (logBox) logBox.innerText = `⚡ 3, 2, 1... LET IT RIP! Battle vs ${currentSelectedOpponent.name}!`;
+  if (logBox) logBox.innerText = `🚀 ${launchBonusMsg} vs ${currentSelectedOpponent.name}! LET IT RIP!`;
+}
+
+function startBattle() {
+  startLaunchChargingPhase();
 }
 
 function updateAndDrawStadium() {

@@ -385,9 +385,21 @@
         <canvas id="stadium-canvas" width="700" height="420"></canvas>
         
         <div class="stadium-overlay" id="stadium-start-overlay">
-          <div class="overlay-text">
+          <div class="overlay-text" id="overlay-welcome-box">
             <h3>ARENA READY</h3>
-            <p>Select your rival and launch power, then click "LET IT RIP!"</p>
+            <p>Select your rival champion, then click "LET IT RIP!" to enter the launch charging phase.</p>
+          </div>
+
+          <!-- Interactive Launch Power Meter (Shown on Launch) -->
+          <div class="launch-power-container hidden" id="launch-power-container">
+            <h4><i class="fa-solid fa-gauge-high"></i> CHARGE YOUR LAUNCH!</h4>
+            <p>Click "RELEASE!" when the meter hits the green X-Extreme Zone!</p>
+            <div class="power-meter-track">
+              <div class="power-sweet-spot"></div>
+              <div class="power-meter-fill" id="power-meter-fill"></div>
+            </div>
+            <div class="power-meter-val"><span id="power-val-num">50</span>% POWER</div>
+            <button class="btn btn-glow btn-large" id="release-launch-btn"><i class="fa-solid fa-bolt"></i> RELEASE LAUNCH!</button>
           </div>
         </div>
 
