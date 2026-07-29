@@ -952,6 +952,12 @@ function executeLaunch() {
   const overlay = document.getElementById('stadium-start-overlay');
   if (overlay) overlay.classList.add('hidden');
 
+  const powerContainer = document.getElementById('launch-power-container');
+  if (powerContainer) powerContainer.classList.add('hidden');
+
+  const welcomeBox = document.getElementById('overlay-welcome-box');
+  if (welcomeBox) welcomeBox.classList.remove('hidden');
+
   const actionOverlay = document.getElementById('battle-action-overlay');
   if (actionOverlay) actionOverlay.classList.remove('hidden');
 
