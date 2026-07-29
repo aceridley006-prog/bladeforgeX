@@ -854,7 +854,7 @@ function initStadiumSimulator() {
     simFloatingTexts.push({ x: p1State.x, y: p1State.y - 20, text: '🎯 BOOST!', color: '#facc15', life: 0.8 });
   });
 
-  // Mouse / Touch Dragging controls on arena canvas
+  // Mouse / Touch Dragging controls restricted inside arena perimeter
   simCanvas.addEventListener('mousedown', (e) => {
     isDraggingP1 = true;
   });
@@ -863,10 +863,23 @@ function initStadiumSimulator() {
     const rect = simCanvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
-    p1State.x = mx;
-    p1State.y = my;
-    p1State.vx = (mx - p1State.x) * 0.5;
-    p1State.vy = (my - p1State.y) * 0.5;
+    const cx = simCanvas.width / 2;
+    const cy = simCanvas.height / 2;
+    const arenaRadius = 180;
+
+    const dx = mx - cx;
+    const dy = my - cy;
+    const dist = Math.hypot(dx, dy);
+    const maxDist = arenaRadius - p1State.radius;
+
+    if (dist <= maxDist) {
+      p1State.x = mx;
+      p1State.y = my;
+    } else {
+      const angle = Math.atan2(dy, dx);
+      p1State.x = cx + Math.cos(angle) * maxDist;
+      p1State.y = cy + Math.sin(angle) * maxDist;
+    }
   });
   window.addEventListener('mouseup', () => { isDraggingP1 = false; });
   simCanvas.addEventListener('mouseleave', () => { isDraggingP1 = false; });
@@ -1106,6 +1119,15 @@ function updateAndDrawStadium() {
 
       p.x += p.vx;
       p.y += p.vy;
+
+      // Strict perimeter clamp inside arena bowl
+      const distFromCenter = Math.hypot(p.x - cx, p.y - cy);
+      const maxAllowed = arenaRadius - p.radius;
+      if (distFromCenter > maxAllowed) {
+        const angle = Math.atan2(p.y - cy, p.x - cx);
+        p.x = cx + Math.cos(angle) * maxAllowed;
+        p.y = cy + Math.sin(angle) * maxAllowed;
+      }
 
       // Friction & Stamina loss (ultra low drain for prolonged, highly interactive endurance battles)
       p.vx *= 0.996;
