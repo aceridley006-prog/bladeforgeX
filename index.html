@@ -342,14 +342,14 @@
     <div class="section-header center">
       <span class="subtitle"><i class="fa-solid fa-fire"></i> BEYSTADIUM ARENA</span>
       <h2>INTERACTIVE <span class="text-gradient">BATTLE SIMULATOR</span></h2>
-      <p>Test your active custom Beyblade against multiple rival champions with distinct AI personalities and special launch controls!</p>
+      <p>Control your Beyblade with <strong>WASD / Arrow Keys</strong> or mouse drag! Charge your launch, let it rip, and smash into rival champions!</p>
     </div>
 
     <div class="simulator-box">
       <div class="sim-controls-top">
         <div class="sim-player-info">
           <span class="player-dot p1"></span>
-          <span><strong>PLAYER:</strong> <span id="sim-p1-name">Custom Build</span></span>
+          <span><strong>PLAYER (WASD / Arrows):</strong> <span id="sim-p1-name">Custom Build</span></span>
         </div>
 
         <div class="sim-config-group">
@@ -364,16 +364,11 @@
             </select>
           </div>
           <div class="sim-select-wrapper">
-            <label for="launch-power-select"><i class="fa-solid fa-gauge-high"></i> Launch:</label>
-            <select id="launch-power-select" class="custom-select">
-              <option value="xdash">X-Extreme Dash (Power)</option>
-              <option value="balanced" selected>Balanced Launch</option>
-              <option value="stamina">Stamina Mode</option>
-            </select>
+            <button class="btn btn-outline btn-sm" id="charge-power-btn"><i class="fa-solid fa-bolt"></i> 1. Charge Launch</button>
           </div>
         </div>
 
-        <button class="btn btn-glow" id="launch-battle-btn"><i class="fa-solid fa-play"></i> 3, 2, 1... LET IT RIP!</button>
+        <button class="btn btn-glow" id="launch-battle-btn"><i class="fa-solid fa-play"></i> 2. LET IT RIP!</button>
 
         <div class="sim-player-info">
           <span class="player-dot p2" id="sim-p2-dot"></span>
@@ -387,19 +382,19 @@
         <div class="stadium-overlay" id="stadium-start-overlay">
           <div class="overlay-text" id="overlay-welcome-box">
             <h3>ARENA READY</h3>
-            <p>Select your rival champion, then click "LET IT RIP!" to enter the launch charging phase.</p>
+            <p>Step 1: Click <strong>"1. Charge Launch"</strong> to set your launch power.<br>Step 2: Click <strong>"2. LET IT RIP!"</strong> to start the match and drive your Beyblade!</p>
           </div>
 
-          <!-- Interactive Launch Power Meter (Shown on Launch) -->
+          <!-- Interactive Launch Power Meter (Shown on Charge) -->
           <div class="launch-power-container hidden" id="launch-power-container">
             <h4><i class="fa-solid fa-gauge-high"></i> CHARGE YOUR LAUNCH!</h4>
-            <p>Click "RELEASE!" when the meter hits the green X-Extreme Zone!</p>
+            <p>Click "LOCK POWER!" when the meter hits the green X-Extreme Zone!</p>
             <div class="power-meter-track">
               <div class="power-sweet-spot"></div>
               <div class="power-meter-fill" id="power-meter-fill"></div>
             </div>
             <div class="power-meter-val"><span id="power-val-num">50</span>% POWER</div>
-            <button class="btn btn-glow btn-large" id="release-launch-btn"><i class="fa-solid fa-bolt"></i> RELEASE LAUNCH!</button>
+            <button class="btn btn-glow btn-large" id="release-launch-btn"><i class="fa-solid fa-check"></i> LOCK POWER!</button>
           </div>
         </div>
 
@@ -416,7 +411,7 @@
           <div class="hp-track"><div class="hp-fill p1" id="p1-hp-bar" style="width: 100%"></div></div>
         </div>
         <div class="collision-log" id="sim-log-box">
-          Ready for battle initialization... Choose rival and launch!
+          Ready... Click "1. Charge Launch" then "2. LET IT RIP!" to pilot your Beyblade!
         </div>
         <div class="live-hp">
           <label>CPU Stamina <span id="p2-hp-text">100%</span></label>
