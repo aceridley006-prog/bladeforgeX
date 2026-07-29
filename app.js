@@ -530,13 +530,48 @@ function drawBeybladeGraphic(ctx, x, y, radius, config) {
 
     ctx.beginPath();
     if (shape === 'aggressive-spikes') {
-      ctx.moveTo(radius * 0.6, 0);
-      ctx.lineTo(radius * 1.15, radius * 0.3);
-      ctx.lineTo(radius * 0.7, radius * 0.4);
+      ctx.moveTo(radius * 0.5, 0);
+      ctx.lineTo(radius * 1.2, radius * 0.35);
+      ctx.lineTo(radius * 0.7, radius * 0.45);
     } else if (shape === 'smooth-curve') {
-      ctx.arc(radius * 0.85, 0, radius * 0.35, 0, Math.PI);
+      ctx.arc(radius * 0.85, 0, radius * 0.38, 0, Math.PI);
     } else if (shape === 'heavy-armor') {
-      ctx.rect(radius * 0.6, -radius * 0.25, radius * 0.45, radius * 0.5);
+      ctx.rect(radius * 0.55, -radius * 0.28, radius * 0.5, radius * 0.56);
+    } else if (shape === 'shark-fin') {
+      ctx.moveTo(radius * 0.4, -radius * 0.2);
+      ctx.lineTo(radius * 1.15, -radius * 0.1);
+      ctx.lineTo(radius * 0.8, radius * 0.3);
+    } else if (shape === 'arrow-wings') {
+      ctx.moveTo(radius * 0.5, 0);
+      ctx.lineTo(radius * 1.2, -radius * 0.2);
+      ctx.lineTo(radius * 1.0, radius * 0.2);
+    } else if (shape === 'heavy-hammer') {
+      ctx.rect(radius * 0.6, -radius * 0.35, radius * 0.45, radius * 0.7);
+    } else if (shape === 'goliath-shield') {
+      ctx.moveTo(radius * 0.5, -radius * 0.2);
+      ctx.lineTo(radius * 1.1, -radius * 0.15);
+      ctx.lineTo(radius * 1.1, radius * 0.15);
+      ctx.lineTo(radius * 0.5, radius * 0.2);
+    } else if (shape === 'dragon-claws') {
+      ctx.moveTo(radius * 0.5, 0);
+      ctx.quadraticCurveTo(radius * 0.9, -radius * 0.4, radius * 1.15, -radius * 0.1);
+      ctx.lineTo(radius * 0.7, radius * 0.3);
+    } else if (shape === 'crest-shield') {
+      ctx.moveTo(radius * 0.55, -radius * 0.25);
+      ctx.lineTo(radius * 1.05, -radius * 0.2);
+      ctx.lineTo(radius * 1.15, 0);
+      ctx.lineTo(radius * 1.05, radius * 0.2);
+      ctx.lineTo(radius * 0.55, radius * 0.25);
+    } else if (shape === 'horn-edge') {
+      ctx.moveTo(radius * 0.5, 0);
+      ctx.lineTo(radius * 1.25, -radius * 0.1);
+      ctx.lineTo(radius * 0.6, radius * 0.2);
+    } else if (shape === 'viper-fangs') {
+      ctx.moveTo(radius * 0.5, -radius * 0.15);
+      ctx.lineTo(radius * 1.1, -radius * 0.3);
+      ctx.lineTo(radius * 0.9, 0);
+      ctx.lineTo(radius * 1.1, radius * 0.3);
+      ctx.lineTo(radius * 0.5, radius * 0.15);
     } else { // star-wings
       ctx.moveTo(radius * 0.6, -radius * 0.1);
       ctx.lineTo(radius * 1.05, 0);
@@ -584,10 +619,21 @@ function drawBeybladeGraphic(ctx, x, y, radius, config) {
 
   // 5. Center Icon / Symbol Emblem
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 20px Orbitron';
+  ctx.font = 'bold 18px Orbitron';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('⚡', x, y);
+  let symbol = '⚡';
+  if (shape === 'shark-fin') symbol = '🦈';
+  else if (shape === 'arrow-wings') symbol = '🏹';
+  else if (shape === 'heavy-hammer') symbol = '🔨';
+  else if (shape === 'goliath-shield') symbol = '🛡️';
+  else if (shape === 'dragon-claws') symbol = '🐉';
+  else if (shape === 'crest-shield') symbol = '🦁';
+  else if (shape === 'horn-edge') symbol = '🦄';
+  else if (shape === 'viper-fangs') symbol = '🐍';
+  else if (shape === 'heavy-armor') symbol = '🛡️';
+  else if (shape === 'smooth-curve') symbol = '🌀';
+  ctx.fillText(symbol, x, y);
 }
 
 // ==========================================
